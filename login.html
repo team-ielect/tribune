@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NOVA-TRIBUNE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #22d3ee;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --dark-tertiary: #334155;
+            --light: #f1f5f9;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-option {
+            flex: 1;
+            padding: 1rem;
+            background: var(--dark);
+            border: 2px solid transparent;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+        }
+
+        .role-option.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .paste-btn {
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .paste-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark-secondary);
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 2000;
+            opacity: 0;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--success);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: var(--text);
+        }
+
+        .error-details {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            max-height: 100px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+
+        .auto-login-option {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .auto-login-option input {
+            margin-right: 0.5rem;
+        }
+
+        .voter-features {
+            display: none;
+        }
+
+        .voter-features.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            .role-selector {
+                flex-direction: column;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <span>NOVA-TRIBUNE</span>
+            </div>
+            <div class="header-text" style="color: #2296ee;">Community & Association Council Hub</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <div class="login-header">
+                <h1 class="login-title">Login</h1>
+                <p class="login-subtitle">Access your election dashboard</p>
+            </div>
+
+            <div class="role-selector">
+                <div class="role-option active" data-role="admin">
+                    <div class="role-icon"><i class="fas fa-user-shield"></i></div>
+                    <div>Admin</div>
+                </div>
+                <div class="role-option" data-role="voter">
+                    <div class="role-icon"><i class="fas fa-user"></i></div>
+                    <div>Voter</div>
+                </div>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="electionId">Election ID</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" class="form-input" id="electionId" placeholder="Enter election ID" required>
+                        <button type="button" class="paste-btn" id="pasteElectionIdBtn" title="Paste from clipboard"
+                            style="display: none;">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" class="form-input" id="username" placeholder="Enter username" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="Enter password" required>
+                </div>
+
+                <div class="voter-features" id="voterFeatures">
+                    <div class="auto-login-option">
+                        <input type="checkbox" id="autoLogin" checked>
+                        <label for="autoLogin">Auto-login after pasting credentials</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </form>
+
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+            <div id="errorDetails" class="error-details" style="display: none;"></div>
+        </div>
+        <button class="toast-close" id="toastClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhVo3RzzXUzUFeg1bP6C6U9tgwCaHErmM",
+            authDomain: "nova-c2bfd.firebaseapp.com",
+            databaseURL: "https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "nova-c2bfd",
+            storageBucket: "nova-c2bfd.firebasestorage.app",
+            messagingSenderId: "964167973576",
+            appId: "1:964167973576:web:5d8987c8386cf22ce083fd"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DOM Elements
+        const roleOptions = document.querySelectorAll('.role-option');
+        const loginForm = document.getElementById('loginForm');
+        const electionIdInput = document.getElementById('electionId');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const pasteElectionIdBtn = document.getElementById('pasteElectionIdBtn');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const errorDetails = document.getElementById('errorDetails');
+        const toastClose = document.getElementById('toastClose');
+        const autoLoginCheckbox = document.getElementById('autoLogin');
+        const voterFeatures = document.getElementById('voterFeatures');
+
+        // Toast timeout variable
+        let toastTimeout;
+
+        // Set default role to admin
+        let selectedRole = 'admin';
+
+        // Role Selection
+        roleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                roleOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedRole = option.dataset.role;
+
+                // Update UI based on selected role
+                if (selectedRole === 'voter') {
+                    usernameInput.placeholder = 'Enter voter ID';
+                    usernameInput.style.textTransform = 'uppercase';
+                    electionIdInput.placeholder = 'Enter election ID or paste login details';
+                    pasteElectionIdBtn.style.display = 'block';
+                    voterFeatures.classList.add('active');
+                } else {
+                    usernameInput.placeholder = 'Enter username';
+                    usernameInput.style.textTransform = 'none';
+                    electionIdInput.placeholder = 'Enter election ID';
+                    pasteElectionIdBtn.style.display = 'none';
+                    voterFeatures.classList.remove('active');
+                }
+            });
+        });
+
+        // Function to parse voter credentials from pasted text
+        function parseVoterCredentials(text) {
+            const lines = text.split('\n');
+            const credentials = {};
+
+            lines.forEach(line => {
+                if (line.includes('Election ID:')) {
+                    credentials.electionId = line.split('Election ID:')[1].trim();
+                } else if (line.includes('Voter ID (Username):')) {
+                    credentials.username = line.split('Voter ID (Username):')[1].trim();
+                } else if (line.includes('Password:')) {
+                    credentials.password = line.split('Password:')[1].trim();
+                }
+            });
+
+            return credentials;
+        }
+
+        // Function to fill form with parsed credentials
+        function fillFormWithCredentials(credentials) {
+            if (credentials.electionId) {
+                electionIdInput.value = credentials.electionId;
+            }
+            if (credentials.username) {
+                usernameInput.value = credentials.username;
+            }
+            if (credentials.password) {
+                passwordInput.value = credentials.password;
+            }
+
+            // Auto-login if checkbox is checked
+            if (autoLoginCheckbox.checked && credentials.electionId && credentials.username && credentials.password) {
+                showToast('Success', 'Credentials filled. Logging in...', 'success');
+                setTimeout(() => {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }, 1000);
+            } else {
+                showToast('Success', 'Login credentials filled successfully', 'success');
+            }
+        }
+
+        // Paste Election ID from clipboard
+        pasteElectionIdBtn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    // Check if the pasted text contains voter credentials
+                    if (text.includes('Election ID:') && text.includes('Voter ID (Username):') && text.includes('Password:')) {
+                        const credentials = parseVoterCredentials(text);
+                        fillFormWithCredentials(credentials);
+                    } else {
+                        // If not in the expected format, just paste as election ID
+                        electionIdInput.value = text.trim();
+                        showToast('Success', 'Election ID pasted from clipboard', 'success');
+                    }
+                } else {
+                    showToast('Info', 'No text found in clipboard', 'success');
+                }
+            } catch (err) {
+                console.error('Failed to read clipboard: ', err);
+                showToast('Error', 'Failed to read clipboard', 'error');
+            }
+        });
+
+        // Handle paste event on the election ID input field (only for voters)
+        electionIdInput.addEventListener('paste', async (e) => {
+            // Only process paste event for voter role
+            if (selectedRole !== 'voter') return;
+
+            // Prevent the default paste behavior
+            e.preventDefault();
+
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    // Check if the pasted text contains voter credentials
+                    if (text.includes('Election ID:') && text.includes('Voter ID (Username):') && text.includes('Password:')) {
+                        const credentials = parseVoterCredentials(text);
+                        fillFormWithCredentials(credentials);
+                    } else {
+                        // If not in the expected format, just paste as election ID
+                        electionIdInput.value = text.trim();
+                        showToast('Success', 'Election ID pasted', 'success');
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to read clipboard: ', err);
+                showToast('Error', 'Failed to read clipboard', 'error');
+            }
+        });
+
+        // Toast close button
+        toastClose.addEventListener('click', () => {
+            hideToast();
+        });
+
+        // Form Submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const electionId = electionIdInput.value.trim();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            try {
+                if (selectedRole === 'admin') {
+                    // Admin login
+                    const electionRef = database.ref('TRIBUNE/elections/' + electionId);
+                    const snapshot = await electionRef.once('value');
+
+                    if (!snapshot.exists()) {
+                        showToast('Error', 'Invalid election ID', 'error', `Election ID "${electionId}" not found in database`);
+                        return;
+                    }
+
+                    const electionData = snapshot.val();
+
+                    if (electionData.username !== username || electionData.password !== password) {
+                        showToast('Error', 'Invalid username or password', 'error', `Expected: username="${electionData.username}", password="${electionData.password ? '*'.repeat(electionData.password.length) : ''}"`);
+                        return;
+                    }
+
+                    // Store login info in localStorage
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('electionId', electionId);
+
+                    showToast('Success', 'Login successful', 'success');
+
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1500);
+
+                } else {
+                    // Voter login
+                    const voterRef = database.ref('TRIBUNE/elections/' + electionId + '/voters/' + username);
+                    const snapshot = await voterRef.once('value');
+
+                    if (!snapshot.exists()) {
+                        showToast('Error', 'Invalid voter ID', 'error', `Voter ID "${username}" not found in database`);
+                        return;
+                    }
+
+                    const voterData = snapshot.val();
+
+                    if (voterData.password !== password) {
+                        showToast('Error', 'Invalid password', 'error', `Password length: ${voterData.password.length}, entered: ${password.length}`);
+                        return;
+                    }
+
+                    // Store login info in localStorage
+                    localStorage.setItem('voterId', username);
+                    localStorage.setItem('electionId', electionId);
+
+                    showToast('Success', 'Login successful', 'success');
+
+                    // Redirect to voter dashboard
+                    setTimeout(() => {
+                        window.location.href = 'voter-dashboard.html';
+                    }, 1500);
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Error', 'Login failed. Please try again.', 'error', error.message);
+            }
+        });
+
+        // Toast notification function with improved hiding mechanism
+        function showToast(title, message, type = 'success', details = '') {
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            // Show/hide error details
+            if (type === 'error' && details) {
+                errorDetails.textContent = details;
+                errorDetails.style.display = 'block';
+            } else {
+                errorDetails.style.display = 'none';
+            }
+
+            // Update toast color based on type
+            if (type === 'error') {
+                toast.style.borderLeftColor = 'var(--danger)';
+                document.querySelector('.toast-icon').className = 'fas fa-exclamation-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--danger)';
+            } else {
+                toast.style.borderLeftColor = 'var(--success)';
+                document.querySelector('.toast-icon').className = 'fas fa-check-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--success)';
+            }
+
+            // Show toast
+            toast.classList.add('show');
+
+            // Auto-hide after 5 seconds
+            toastTimeout = setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        // Function to hide toast
+        function hideToast() {
+            toast.classList.remove('show');
+
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+        }
+
+        // Auto-check for URL parameters
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlElectionId = urlParams.get('electionId');
+            const urlRole = urlParams.get('role');
+
+            if (urlElectionId) {
+                electionIdInput.value = urlElectionId;
+            }
+
+            if (urlRole === 'voter') {
+                document.querySelector('[data-role="voter"]').click();
+            } else if (urlRole === 'admin') {
+                document.querySelector('[data-role="admin"]').click();
+            }
+        });
+    </script>
+</body>
+
+</html>

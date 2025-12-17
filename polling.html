@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polling - NOVA-TRIBUNE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #22d3ee;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --dark-tertiary: #334155;
+            --light: #f1f5f9;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .polling-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .polling-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .polling-status.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .polling-container {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .polling-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .polling-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .polling-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .verification-methods {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .verification-method {
+            flex: 1;
+            padding: 1.5rem;
+            background: var(--dark);
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .verification-method:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .verification-method.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .verification-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .verification-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .verification-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .verification-form {
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        .verification-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .candidates-container {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .candidates-container.active {
+            display: block;
+        }
+
+        .candidates-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .candidates-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .candidate-card {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .candidate-card.selected {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .candidate-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .candidate-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .candidate-party {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .candidate-description {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .vote-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vote-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .vote-btn:disabled {
+            background: var(--dark-tertiary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .selected-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .qr-scanner {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .qr-video {
+            width: 100%;
+            border-radius: 0.5rem;
+            background: var(--dark);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .manual-input {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .manual-input p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--warning);
+        }
+
+        .polling-inactive {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .polling-inactive i {
+            font-size: 4rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        .polling-inactive h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .polling-inactive p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark-secondary);
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 2000;
+            opacity: 0;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--success);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: var(--text);
+        }
+
+        .error-details {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            max-height: 100px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .verification-methods {
+                flex-direction: column;
+            }
+
+            .candidates-list {
+                grid-template-columns: 1fr;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <span>NOVA-TRIBUNE</span>
+            </div>
+            <div class="polling-status inactive" id="pollingStatus">
+                <span class="status-dot"></span>
+                Polling Inactive
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="polling-container">
+            <div class="polling-header">
+                <h1 class="polling-title">Secure Voting Portal</h1>
+                <p class="polling-subtitle">Verify your identity to cast your vote</p>
+            </div>
+
+            <div id="pollingContent">
+                <!-- Polling content will be dynamically loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+            <div id="errorDetails" class="error-details" style="display: none;"></div>
+        </div>
+        <button class="toast-close" id="toastClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhVo3RzzXUzUFeg1bP6C6U9tgwCaHErmM",
+            authDomain: "nova-c2bfd.firebaseapp.com",
+            databaseURL: "https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "nova-c2bfd",
+            storageBucket: "nova-c2bfd.firebasestorage.app",
+            messagingSenderId: "964167973576",
+            appId: "1:964167973576:web:5d8987c8386cf22ce083fd"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DOM Elements
+        const pollingStatus = document.getElementById('pollingStatus');
+        const pollingContent = document.getElementById('pollingContent');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const errorDetails = document.getElementById('errorDetails');
+        const toastClose = document.getElementById('toastClose');
+
+        // Toast timeout variable
+        let toastTimeout;
+
+        // Election and voter data
+        let electionData = {};
+        let voterData = {};
+        let candidates = {};
+        let selectedCandidateId = null;
+        let currentElectionId = null;
+        let currentVoterId = null;
+
+        // Check if polling is active
+        async function checkPollingStatus() {
+            try {
+                // Get election ID from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                currentElectionId = urlParams.get('electionId');
+
+                if (!currentElectionId) {
+                    // If no election ID in URL, show a form to enter it
+                    showElectionIdForm();
+                    return;
+                }
+
+                const electionRef = database.ref('TRIBUNE/elections/' + currentElectionId);
+                const snapshot = await electionRef.once('value');
+
+                if (snapshot.exists()) {
+                    electionData = snapshot.val();
+
+                    // Update polling status
+                    if (electionData.isActive) {
+                        pollingStatus.classList.remove('inactive');
+                        pollingStatus.classList.add('active');
+                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Active';
+                    } else {
+                        pollingStatus.classList.remove('active');
+                        pollingStatus.classList.add('inactive');
+                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Inactive';
+                    }
+
+                    // Show verification methods if polling is active
+                    if (electionData.isActive) {
+                        showVerificationMethods();
+                    } else {
+                        showPollingInactive();
+                    }
+                } else {
+                    showToast('Error', 'Election not found', 'error');
+                    showElectionIdForm();
+                }
+            } catch (error) {
+                console.error('Error checking polling status:', error);
+                showToast('Error', 'Failed to check polling status', 'error');
+            }
+        }
+
+        // Show election ID form
+        function showElectionIdForm() {
+            pollingContent.innerHTML = `
+                <div class="verification-form active">
+                    <div class="form-group">
+                        <label class="form-label" for="electionIdInput">Election ID</label>
+                        <input type="text" class="form-input" id="electionIdInput" placeholder="Enter election ID">
+                    </div>
+                    <button class="btn btn-primary btn-block" id="submitElectionIdBtn">
+                        <i class="fas fa-arrow-right"></i>
+                        Continue
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('submitElectionIdBtn').addEventListener('click', () => {
+                const electionIdInput = document.getElementById('electionIdInput').value.trim();
+
+                if (electionIdInput) {
+                    // Update URL with election ID
+                    const newUrl = window.location.pathname + '?electionId=' + encodeURIComponent(electionIdInput);
+                    window.history.replaceState({}, '', newUrl);
+
+                    // Check polling status again
+                    checkPollingStatus();
+                } else {
+                    showToast('Error', 'Please enter an election ID', 'error');
+                }
+            });
+        }
+
+        // Show polling inactive message
+        function showPollingInactive() {
+            pollingContent.innerHTML = `
+                <div class="polling-inactive">
+                    <i class="fas fa-clock"></i>
+                    <h2>Polling is Currently Inactive</h2>
+                    <p>The polling period has not started yet or has ended. Please check back during scheduled polling hours.</p>
+                    <button class="btn btn-secondary" id="refreshStatusBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh Status
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('refreshStatusBtn').addEventListener('click', checkPollingStatus);
+        }
+
+        // Show verification methods
+        function showVerificationMethods() {
+            pollingContent.innerHTML = `
+                <div class="verification-methods">
+                    <div class="verification-method" id="qrMethod">
+                        <div class="verification-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="verification-title">QR Code</div>
+                        <div class="verification-description">Scan your voter ID QR code</div>
+                    </div>
+                    
+                    <div class="verification-method" id="manualMethod">
+                        <div class="verification-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="verification-title">Manual Entry</div>
+                        <div class="verification-description">Enter your voter ID manually</div>
+                    </div>
+                </div>
+                
+                <div class="verification-form" id="qrForm">
+                    <div class="qr-scanner">
+                        <div class="qr-video">
+                            <i class="fas fa-qrcode" style="font-size: 4rem;"></i>
+                            <p>QR Scanner Placeholder</p>
+                        </div>
+                        <div class="manual-input">
+                            <p>Or enter your voter ID manually:</p>
+                            <input type="text" class="form-input" id="voterIdInput" placeholder="Enter your voter ID">
+                            <button class="btn btn-primary btn-block" id="verifyVoterIdBtn">
+                                <i class="fas fa-check"></i>
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="verification-form" id="manualForm">
+                    <div class="form-group">
+                        <label class="form-label" for="voterIdManualInput">Voter ID</label>
+                        <input type="text" class="form-input" id="voterIdManualInput" placeholder="Enter your voter ID">
+                    </div>
+                    <button class="btn btn-primary btn-block" id="verifyVoterIdManualBtn">
+                        <i class="fas fa-check"></i>
+                        Verify
+                    </button>
+                </div>
+            `;
+
+            // Add event listeners
+            document.getElementById('qrMethod').addEventListener('click', () => {
+                document.querySelectorAll('.verification-method').forEach(method => {
+                    method.classList.remove('active');
+                });
+                document.querySelectorAll('.verification-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+
+                document.getElementById('qrMethod').classList.add('active');
+                document.getElementById('qrForm').classList.add('active');
+            });
+
+            document.getElementById('manualMethod').addEventListener('click', () => {
+                document.querySelectorAll('.verification-method').forEach(method => {
+                    method.classList.remove('active');
+                });
+                document.querySelectorAll('.verification-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+
+                document.getElementById('manualMethod').classList.add('active');
+                document.getElementById('manualForm').classList.add('active');
+            });
+
+            document.getElementById('verifyVoterIdBtn').addEventListener('click', () => {
+                const voterId = document.getElementById('voterIdInput').value.trim();
+                if (voterId) {
+                    verifyVoter(voterId);
+                } else {
+                    showToast('Error', 'Please enter your voter ID', 'error');
+                }
+            });
+
+            document.getElementById('verifyVoterIdManualBtn').addEventListener('click', () => {
+                const voterId = document.getElementById('voterIdManualInput').value.trim();
+                if (voterId) {
+                    verifyVoter(voterId);
+                } else {
+                    showToast('Error', 'Please enter your voter ID', 'error');
+                }
+            });
+
+            // Set QR method as active by default
+            document.getElementById('qrMethod').click();
+        }
+
+        // Verify voter
+        async function verifyVoter(voterId) {
+            try {
+                const voterRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + voterId);
+                const snapshot = await voterRef.once('value');
+
+                if (snapshot.exists()) {
+                    voterData = snapshot.val();
+                    currentVoterId = voterId;
+
+                    // Check if voter has already voted
+                    if (voterData.hasVoted) {
+                        showToast('Error', 'You have already voted', 'error');
+                        return;
+                    }
+
+                    // Generate and send OTP
+                    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+                    // Store OTP in Firebase
+                    await voterRef.update({
+                        otp: otp,
+                        otpExpiry: new Date(Date.now() + 2 * 60000).toISOString() // OTP valid for 2 minutes
+                    });
+
+                    // Show OTP form
+                    showOtpForm(otp);
+                } else {
+                    showToast('Error', 'Invalid voter ID', 'error');
+                }
+            } catch (error) {
+                console.error('Error verifying voter:', error);
+                showToast('Error', 'Failed to verify voter', 'error');
+            }
+        }
+
+        // Show OTP form
+        function showOtpForm(otp) {
+            pollingContent.innerHTML = `
+                <div class="verification-form active">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h2>Verify Your Identity</h2>
+                        <p style="color: var(--text-secondary);">A one-time password has been sent to your dashboard</p>
+                        <div style="margin-top: 1.5rem;">
+                            <p style="font-size: 0.875rem; color: var(--text-secondary);">Your OTP is:</p>
+                            <div style="font-size: 2rem; font-weight: 700; letter-spacing: 0.5rem; margin: 0.5rem 0; color: var(--primary);">${otp}</div>
+                            <p style="color: var(--text-secondary);">This OTP is valid for 2 minutes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="otpInput">Enter OTP</label>
+                        <input type="text" class="form-input" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6">
+                    </div>
+                    
+                    <div class="countdown" id="otpCountdown">2:00</div>
+                    
+                    <button class="btn btn-primary btn-block" id="verifyOtpBtn">
+                        <i class="fas fa-check"></i>
+                        Verify & Continue
+                    </button>
+                </div>
+            `;
+
+            // Start countdown
+            let timeLeft = 120; // 2 minutes in seconds
+            const countdownElement = document.getElementById('otpCountdown');
+
+            const countdownInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = 'Expired';
+                    document.getElementById('verifyOtpBtn').disabled = true;
+                }
+
+                timeLeft--;
+            }, 1000);
+
+            // Add event listener for OTP verification
+            document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
+                const enteredOtp = document.getElementById('otpInput').value.trim();
+
+                if (enteredOtp === otp) {
+                    clearInterval(countdownInterval);
+
+                    try {
+                        // Load candidates
+                        await loadCandidates();
+
+                        // Show candidates selection
+                        showCandidatesSelection();
+                    } catch (error) {
+                        console.error('Error loading candidates:', error);
+                        showToast('Error', 'Failed to load candidates', 'error');
+                    }
+                } else {
+                    showToast('Error', 'Invalid OTP', 'error');
+                }
+            });
+        }
+
+        // Load candidates
+        async function loadCandidates() {
+            try {
+                const candidatesRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/candidates');
+                const snapshot = await candidatesRef.once('value');
+
+                if (snapshot.exists()) {
+                    candidates = snapshot.val();
+                } else {
+                    // Create default candidates if none exist
+                    candidates = {
+                        'CAN_1': {
+                            name: 'Candidate One',
+                            party: 'Party One',
+                            description: 'Description for candidate one'
+                        },
+                        'CAN_2': {
+                            name: 'Candidate Two',
+                            party: 'Party Two',
+                            description: 'Description for candidate two'
+                        }
+                    };
+
+                    // Add default candidates to Firebase if needed
+                    const candidatesRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/candidates');
+                    await candidatesRef.set(candidates);
+                }
+            } catch (error) {
+                console.error('Error loading candidates:', error);
+            }
+        }
+
+        // Show candidates selection
+        function showCandidatesSelection() {
+            pollingContent.innerHTML = `
+                <div class="candidates-container active">
+                    <h2 class="candidates-title">Select a Candidate to Vote For</h2>
+                    <div class="candidates-list" id="candidatesList">
+                        <!-- Candidates will be populated here -->
+                    </div>
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" id="backBtn" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                        </button>
+                        <button class="btn btn-success" id="confirmVoteBtn" style="flex: 1;" disabled>
+                            <i class="fas fa-check"></i>
+                            Confirm Vote
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Populate candidates list
+            const candidatesList = document.getElementById('candidatesList');
+            candidatesList.innerHTML = '';
+
+            Object.keys(candidates).forEach(candidateId => {
+                const candidate = candidates[candidateId];
+                const candidateCard = document.createElement('div');
+                candidateCard.className = 'candidate-card';
+                candidateCard.dataset.id = candidateId;
+
+                candidateCard.innerHTML = `
+                    <div class="candidate-avatar">${candidate.name.charAt(0).toUpperCase()}</div>
+                    <div class="candidate-info">
+                        <div class="candidate-name">${candidate.name}</div>
+                        <div class="candidate-party">${candidate.party}</div>
+                        <div class="candidate-description">${candidate.description}</div>
+                    </div>
+                    <button class="vote-btn">Select</button>
+                `;
+
+                candidatesList.appendChild(candidateCard);
+            });
+
+            // Add event listeners
+            document.querySelectorAll('.candidate-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.candidate-card').forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('.vote-btn').textContent = 'Select';
+                    });
+
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    card.querySelector('.vote-btn').textContent = 'Selected';
+
+                    // Set selected candidate ID
+                    selectedCandidateId = card.dataset.id;
+
+                    // Enable confirm vote button
+                    document.getElementById('confirmVoteBtn').disabled = false;
+                });
+            });
+
+            // Add event listeners to buttons
+            document.getElementById('backBtn').addEventListener('click', () => {
+                showVerificationMethods();
+            });
+
+            document.getElementById('confirmVoteBtn').addEventListener('click', async () => {
+                if (selectedCandidateId) {
+                    await castVote();
+                }
+            });
+        }
+
+        // Cast vote
+        async function castVote() {
+            try {
+                // Check if polling is active
+                if (!electionData.isActive) {
+                    showToast('Error', 'Polling is not active at the moment', 'error');
+                    return;
+                }
+
+                // Check if voter has already voted
+                if (voterData.hasVoted) {
+                    showToast('Error', 'You have already voted', 'error');
+                    return;
+                }
+
+                // Cast the vote
+                await database.ref('TRIBUNE/elections/' + currentElectionId + '/results/' + selectedCandidateId).transaction(currentVotes => {
+                    return (currentVotes || 0) + 1;
+                });
+
+                // Mark voter as having voted
+                await database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + currentVoterId).update({
+                    hasVoted: true,
+                    votedFor: selectedCandidateId,
+                    otp: null,
+                    otpExpiry: null
+                });
+
+                // Show success message
+                showToast('Success', `Your vote has been successfully cast for ${candidates[selectedCandidateId].name}`, 'success');
+
+                // Show vote confirmation
+                showVoteConfirmation();
+            } catch (error) {
+                console.error('Error casting vote:', error);
+                showToast('Error', 'Failed to cast vote', 'error');
+            }
+        }
+
+        // Show vote confirmation
+        function showVoteConfirmation() {
+            pollingContent.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;"></i>
+                    <h2>Vote Successfully Cast</h2>
+                    <p style="margin: 1rem 0; color: var(--text-secondary);">Your vote has been recorded for:</p>
+                    <div style="margin: 1rem 0; font-size: 1.25rem; font-weight: 600;">${candidates[selectedCandidateId].name}</div>
+                    <div style="color: var(--text-secondary); margin-bottom: 2rem;">${candidates[selectedCandidateId].party}</div>
+                    <button class="btn btn-primary" id="finishBtn">
+                        <i class="fas fa-check"></i>
+                        Finish
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('finishBtn').addEventListener('click', () => {
+                // Redirect to voter dashboard
+                window.location.href = 'voter-dashboard.html';
+            });
+        }
+
+        // Toast notification function with improved hiding mechanism
+        function showToast(title, message, type = 'success', details = '') {
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            // Show/hide error details
+            if (type === 'error' && details) {
+                errorDetails.textContent = details;
+                errorDetails.style.display = 'block';
+            } else {
+                errorDetails.style.display = 'none';
+            }
+
+            // Update toast color based on type
+            if (type === 'error') {
+                toast.style.borderLeftColor = 'var(--danger)';
+                document.querySelector('.toast-icon').className = 'fas fa-exclamation-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--danger)';
+            } else {
+                toast.style.borderLeftColor = 'var(--success)';
+                document.querySelector('.toast-icon').className = 'fas fa-check-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--success)';
+            }
+
+            // Show toast
+            toast.classList.add('show');
+
+            // Auto-hide after 5 seconds
+            toastTimeout = setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        // Function to hide toast
+        function hideToast() {
+            toast.classList.remove('show');
+
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+        }
+
+        // Initial check
+        checkPollingStatus();
+    </script>
+</body>
+
+</html>

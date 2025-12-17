@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA-TRIBUNE - Community & Association Council Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #22d3ee;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --dark-tertiary: #334155;
+            --light: #f1f5f9;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 1.5rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            margin-top: 80px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%236366f1" fill-opacity="0.1" d="M0,32L48,69.3C96,107,192,181,288,213.3C384,245,480,235,576,202.7C672,171,768,117,864,117.3C960,117,1056,171,1152,176C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* How It Works Section */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 35px;
+            right: -15px;
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .benefit-icon {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .benefit-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-content p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(34, 211, 238, 0.1) 100%);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--dark-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark-secondary);
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 2000;
+            opacity: 0;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--success);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: var(--text);
+        }
+
+        .error-details {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            max-height: 100px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem 1.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .cta-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <span>NOVA-TRIBUNE</span>
+            </div>
+            <div class="header-text" style="color: #2296ee;">Community & Association Council Hub</div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Transparent & Secure Elections</h1>
+                <p>A modern election management system designed for associations, clubs, societies, and residential
+                    communities. Create, manage, and conduct elections with complete transparency and security.</p>
+                <div class="cta-container">
+                    <button class="btn btn-primary" id="createElectionBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Create Election
+                    </button>
+                    <button class="btn btn-secondary" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Key Features</h2>
+                    <p class="section-subtitle">Our platform offers a comprehensive set of tools to manage your
+                        elections
+                        efficiently and securely.</p>
+                </div>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Secure & Transparent</h3>
+                        <p class="feature-description">Our system ensures the integrity of your election process with
+                            advanced security measures and complete transparency.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="feature-title">Multi-Role Access</h3>
+                        <p class="feature-description">Separate dashboards for administrators and voters with role-based
+                            access control and functionality.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h3 class="feature-title">QR Code Verification</h3>
+                        <p class="feature-description">Voter verification through unique QR codes and OTP system for
+                            enhanced security during polling.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="feature-title">Real-time Results</h3>
+                        <p class="feature-description">Live polling updates and result visualization once the election
+                            administrator publishes the results.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile Responsive</h3>
+                        <p class="feature-description">Access the system from any device with our fully responsive
+                            design
+                            optimized for all screen sizes.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="feature-title">Time-Controlled Polling</h3>
+                        <p class="feature-description">Set specific start and end times for polling periods with
+                            automatic
+                            activation and deactivation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">Our simple four-step process makes election management easy and
+                        efficient.</p>
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Create Election</h3>
+                        <p class="step-description">Set up your election with details like title, date, time, location,
+                            and number of booths.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Add Candidates & Voters</h3>
+                        <p class="step-description">Register candidates and voters with their information and generate
+                            unique QR codes for verification.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Conduct Polling</h3>
+                        <p class="step-description">Activate the election during the specified time and allow voters to
+                            cast their votes securely.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Publish Results</h3>
+                        <p class="step-description">Review the results and publish them for all voters to see with
+                            detailed statistics.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="section benefits">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose NOVA-TRIBUNE</h2>
+                    <p class="section-subtitle">Our platform offers numerous benefits for organizations of all sizes.
+                    </p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Increased Participation</h3>
+                            <p>Make voting accessible to all members with our user-friendly interface and mobile
+                                compatibility.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Time & Cost Efficient</h3>
+                            <p>Reduce the administrative burden and costs associated with traditional paper-based
+                                elections.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Enhanced Security</h3>
+                            <p>Protect the integrity of your elections with advanced security features and verification
+                                methods.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Complete Transparency</h3>
+                            <p>Build trust among members with a transparent process that ensures fair and accurate
+                                results.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Easy Administration</h3>
+                            <p>Manage all aspects of your election from a single dashboard with intuitive controls and
+                                features.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Comprehensive Reporting</h3>
+                            <p>Access detailed reports and analytics to gain insights into voter participation and
+                                election outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section cta-section">
+            <div class="section-container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Transform Your Elections?</h2>
+                    <p class="cta-description">Join hundreds of organizations that trust NOVA-TRIBUNE for secure,
+                        transparent, and efficient election management.</p>
+                    <div class="cta-container">
+                        <button class="btn btn-primary" id="createElectionBtn2">
+                            <i class="fas fa-plus-circle"></i>
+                            Create Election
+                        </button>
+                        <button class="btn btn-secondary" id="loginBtn2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NOVA-TRIBUNE</h3>
+                <p>A modern election management system designed for associations, clubs, societies, and residential
+                    communities.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">How It Works</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> info@nova-tribune.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Election St, Democracy City</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 NOVA-TRIBUNE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Create Election Modal -->
+    <div class="modal" id="createElectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Election</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+
+            <form id="createElectionForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Admin Username</label>
+                    <input type="text" class="form-input" id="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-input" id="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-input" id="confirmPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="electionTitle">Election Title</label>
+                    <input type="text" class="form-input" id="electionTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="electionDate">Election Date</label>
+                    <input type="date" class="form-input" id="electionDate" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="startTime">Start Time</label>
+                        <input type="time" class="form-input" id="startTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="endTime">End Time</label>
+                        <input type="time" class="form-input" id="endTime" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="location">Location</label>
+                    <input type="text" class="form-input" id="location" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="booths">Number of Booths</label>
+                    <input type="number" class="form-input" id="booths" min="1" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Election</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+            <div id="errorDetails" class="error-details" style="display: none;"></div>
+        </div>
+        <button class="toast-close" id="toastClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhVo3RzzXUzUFeg1bP6C6U9tgwCaHErmM",
+            authDomain: "nova-c2bfd.firebaseapp.com",
+            databaseURL: "https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "nova-c2bfd",
+            storageBucket: "nova-c2bfd.firebasestorage.app",
+            messagingSenderId: "964167973576",
+            appId: "1:964167973576:web:5d8987c8386cf22ce083fd"
+        };
+
+        // Initialize Firebase with error handling
+        let database;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.error("Error initializing Firebase:", error);
+            showToast('Error', 'Failed to initialize Firebase', 'error', error.message);
+        }
+
+        // DOM Elements
+        const createElectionBtn = document.getElementById('createElectionBtn');
+        const createElectionBtn2 = document.getElementById('createElectionBtn2');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtn2 = document.getElementById('loginBtn2');
+        const createElectionModal = document.getElementById('createElectionModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const createElectionForm = document.getElementById('createElectionForm');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const errorDetails = document.getElementById('errorDetails');
+        const toastClose = document.getElementById('toastClose');
+
+        // Toast timeout variable
+        let toastTimeout;
+
+        // Event Listeners
+        createElectionBtn.addEventListener('click', () => {
+            createElectionModal.style.display = 'flex';
+        });
+
+        createElectionBtn2.addEventListener('click', () => {
+            createElectionModal.style.display = 'flex';
+        });
+
+        loginBtn.addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
+
+        loginBtn2.addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            createElectionModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === createElectionModal) {
+                createElectionModal.style.display = 'none';
+            }
+        });
+
+        // Toast close button
+        toastClose.addEventListener('click', () => {
+            hideToast();
+        });
+
+        // Form Submission
+        createElectionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const electionTitle = document.getElementById('electionTitle').value;
+            const electionDate = document.getElementById('electionDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const location = document.getElementById('location').value;
+            const booths = document.getElementById('booths').value;
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showToast('Error', 'Passwords do not match', 'error');
+                return;
+            }
+
+            // Check if Firebase is initialized
+            if (!database) {
+                showToast('Error', 'Firebase not initialized', 'error', 'Please refresh the page and try again');
+                return;
+            }
+
+            try {
+                // Generate unique election ID
+                const electionId = 'ELEC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+                console.log("Creating election with ID:", electionId);
+
+                // Store election data in Firebase
+                const electionData = {
+                    username,
+                    password,
+                    electionTitle,
+                    electionDate,
+                    startTime,
+                    endTime,
+                    location,
+                    booths,
+                    createdAt: new Date().toISOString(),
+                    isActive: false,
+                    isPublished: false
+                };
+
+                console.log("Election data:", electionData);
+
+                // Create election record in TRIBUNE collection
+                const electionRef = database.ref('TRIBUNE/elections/' + electionId);
+                await electionRef.set(electionData);
+
+                console.log("Election created successfully");
+
+                // Initialize candidates and voters objects
+                await database.ref('TRIBUNE/elections/' + electionId + '/candidates').set({});
+                await database.ref('TRIBUNE/elections/' + electionId + '/voters').set({});
+                await database.ref('TRIBUNE/elections/' + electionId + '/results').set({});
+
+                console.log("Election sub-collections initialized");
+
+                // Store username and election ID in localStorage
+                localStorage.setItem('username', username);
+                localStorage.setItem('electionId', electionId);
+
+                // Show success message
+                showToast('Success', 'Election created successfully!', 'success');
+
+                // Redirect to admin dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error creating election:', error);
+
+                // Extract meaningful error message
+                let errorMessage = 'Failed to create election. Please try again.';
+                let errorDetails = '';
+
+                if (error.code) {
+                    errorDetails = `Error Code: ${error.code}`;
+                }
+
+                if (error.message) {
+                    errorDetails += (errorDetails ? '<br>' : '') + `Error Message: ${error.message}`;
+                }
+
+                showToast('Error', errorMessage, 'error', errorDetails);
+            }
+        });
+
+        // Toast notification function with improved hiding mechanism
+        function showToast(title, message, type = 'success', details = '') {
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            // Show/hide error details
+            if (type === 'error' && details) {
+                errorDetails.textContent = details;
+                errorDetails.style.display = 'block';
+            } else {
+                errorDetails.style.display = 'none';
+            }
+
+            // Update toast color based on type
+            if (type === 'error') {
+                toast.style.borderLeftColor = 'var(--danger)';
+                document.querySelector('.toast-icon').className = 'fas fa-exclamation-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--danger)';
+            } else {
+                toast.style.borderLeftColor = 'var(--success)';
+                document.querySelector('.toast-icon').className = 'fas fa-check-circle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--success)';
+            }
+
+            // Show toast
+            toast.classList.add('show');
+
+            // Auto-hide after 5 seconds
+            toastTimeout = setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        // Function to hide toast
+        function hideToast() {
+            toast.classList.remove('show');
+
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+        }
+    </script>
+</body>
+
+</html>
