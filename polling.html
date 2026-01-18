@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polling - NOVA-TRIBUNE</title>
+    <title>Polling Booth - NOVA-TRIBUNE</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- CryptoJS for hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         :root {
             --primary: #6366f1;
@@ -51,6 +55,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -66,7 +71,14 @@
             font-size: 2rem;
         }
 
-        .polling-status {
+        .booth-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .booth-status {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -76,14 +88,24 @@
             font-weight: 500;
         }
 
-        .polling-status.active {
+        .booth-status.ready {
             background: rgba(16, 185, 129, 0.2);
             color: var(--success);
         }
 
-        .polling-status.inactive {
+        .booth-status.setup {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .booth-status.inactive {
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger);
+        }
+
+        .booth-status.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
         }
 
         .status-dot {
@@ -115,6 +137,165 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        .setup-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .setup-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .setup-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .file-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-path {
+            flex: 1;
+            padding: 0.875rem;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--dark-tertiary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .checklist {
+            text-align: left;
+            margin: 2rem 0;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .checklist-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checklist-icon {
+            margin-right: 1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .checklist-icon.success {
+            color: var(--success);
+        }
+
+        .checklist-icon.error {
+            color: var(--danger);
+        }
+
+        .checklist-icon.pending {
+            color: var(--warning);
+        }
+
         .polling-header {
             text-align: center;
             margin-bottom: 2rem;
@@ -138,10 +319,12 @@
             display: flex;
             gap: 1.5rem;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .verification-method {
             flex: 1;
+            min-width: 200px;
             padding: 1.5rem;
             background: var(--dark);
             border: 2px solid transparent;
@@ -188,71 +371,6 @@
             display: block;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.875rem;
-            background: var(--dark);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            color: var(--text);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .btn {
-            padding: 0.875rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-block {
-            width: 100%;
-            justify-content: center;
-        }
-
         .candidates-container {
             display: none;
             margin-top: 2rem;
@@ -283,6 +401,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .candidate-card:hover {
@@ -336,6 +455,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 1rem;
         }
 
         .vote-btn:hover {
@@ -369,15 +489,9 @@
             margin: 0 auto;
         }
 
-        .qr-video {
-            width: 100%;
+        #qr-reader {
             border-radius: 0.5rem;
-            background: var(--dark);
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
+            overflow: hidden;
         }
 
         .manual-input {
@@ -417,6 +531,56 @@
         .polling-inactive p {
             color: var(--text-secondary);
             margin-bottom: 2rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--dark-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
         }
 
         .toast {
@@ -489,6 +653,98 @@
             font-family: monospace;
         }
 
+        .progress-container {
+            width: 100%;
+            background-color: var(--dark);
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 0.5rem;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .folder-access-notice {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid var(--warning);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: var(--warning);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .connection-status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .connection-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .booth-status-indicator {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: var(--dark-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .booth-status-indicator.ready {
+            border-left: 4px solid var(--success);
+        }
+
+        .booth-status-indicator.active {
+            border-left: 4px solid var(--primary);
+        }
+
+        .booth-status-indicator.inactive {
+            border-left: 4px solid var(--danger);
+        }
+
         @media (max-width: 768px) {
             .verification-methods {
                 flex-direction: column;
@@ -503,6 +759,16 @@
                 left: 1rem;
                 max-width: none;
             }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .booth-info {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -514,25 +780,151 @@
                 <i class="fas fa-building"></i>
                 <span>NOVA-TRIBUNE</span>
             </div>
-            <div class="polling-status inactive" id="pollingStatus">
-                <span class="status-dot"></span>
-                Polling Inactive
+            <div class="booth-info">
+                <div class="booth-status inactive" id="boothStatus">
+                    <span class="status-dot"></span>
+                    <span id="boothStatusText">Inactive</span>
+                </div>
+                <div id="boothNumberContainer" style="display: none;">
+                    Booth: <span id="boothId">-</span>
+                </div>
             </div>
         </div>
     </header>
 
+    <!-- Booth Status Indicator -->
+    <div class="booth-status-indicator" id="boothStatusIndicator" style="display: none;">
+        <span class="status-dot"></span>
+        <span id="boothStatusIndicatorText">Inactive</span>
+    </div>
+
     <main>
         <div class="polling-container">
-            <div class="polling-header">
-                <h1 class="polling-title">Secure Voting Portal</h1>
-                <p class="polling-subtitle">Verify your identity to cast your vote</p>
+            <!-- Booth Setup Section -->
+            <div class="setup-container" id="setupContainer">
+                <h1 class="setup-title">Polling Booth Setup</h1>
+                <p class="setup-subtitle">Configure this device as a secure polling booth</p>
+
+                <div class="form-group">
+                    <label class="form-label" for="electionIdInput">Election ID</label>
+                    <input type="text" class="form-input" id="electionIdInput" placeholder="Enter election ID">
+                </div>
+
+                <div class="form-group" id="folderSelectionGroup" style="display: none;">
+                    <label class="form-label">Blockchain Storage Folder</label>
+                    <div class="folder-access-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <span>You'll be prompted to select a folder for storing vote data. This requires permission to
+                            access your local file system.</span>
+                    </div>
+                    <div class="file-selector">
+                        <div class="file-path" id="folderPath">No folder selected</div>
+                        <button class="btn btn-secondary" id="selectFolderBtn">
+                            <i class="fas fa-folder-open"></i>
+                            Select Folder
+                        </button>
+                    </div>
+                    <input type="file" id="folderInput" style="display: none;" webkitdirectory directory>
+                </div>
+
+                <div class="checklist" id="checklist" style="display: none;">
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="electionIcon">
+                            <i class="fas fa-vote-yea"></i>
+                        </div>
+                        <div>
+                            <div>Election Verification</div>
+                            <div id="electionStatus" style="font-size: 0.875rem; color: var(--text-secondary);">
+                                Not checked</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="blockchainIcon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div>
+                            <div>Blockchain Setup</div>
+                            <div id="blockchainStatus" style="font-size: 0.875rem; color: var(--text-secondary);">
+                                Not initialized</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="connectionIcon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div>
+                            <div>Internet Connection</div>
+                            <div id="connectionStatus" style="font-size: 0.875rem; color: var(--text-secondary);">
+                                Checking...</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="firebaseIcon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <div>Firebase Connection</div>
+                            <div id="firebaseStatus" style="font-size: 0.875rem; color: var(--text-secondary);">
+                                Checking...</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="folderIcon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div>
+                            <div>Folder Access</div>
+                            <div id="folderStatus" style="font-size: 0.875rem; color: var(--text-secondary);">No folder
+                                selected</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon pending" id="boothLimitIcon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <div>
+                            <div>Booth Availability</div>
+                            <div id="boothLimitStatus" style="font-size: 0.875rem; color: var(--text-secondary);">
+                                Checking...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-status" id="firebaseConnectionStatus" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Failed to connect to Firebase. Please check your network connection and try again.</span>
+                </div>
+
+                <button class="btn btn-primary btn-block" id="verifyElectionBtn">
+                    <i class="fas fa-search"></i>
+                    Verify Election
+                </button>
+
+                <button class="btn btn-primary btn-block" id="setupBoothBtn" style="display: none;" disabled>
+                    <i class="fas fa-cog"></i>
+                    Setup Booth
+                </button>
             </div>
 
-            <div id="pollingContent">
-                <!-- Polling content will be dynamically loaded here -->
+            <!-- Polling Content Section -->
+            <div id="pollingContent" style="display: none;">
+                <!-- Content will be dynamically loaded here -->
             </div>
         </div>
     </main>
+
+    <!-- Modal for notifications -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Notification</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
@@ -552,53 +944,675 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // Initialize Firebase
+        // Initialize Firebase with proper configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAhVo3RzzXUzUFeg1bP6C6U9tgwCaHErmM",
             authDomain: "nova-c2bfd.firebaseapp.com",
             databaseURL: "https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "nova-c2bfd",
-            storageBucket: "nova-c2bfd.firebasestorage.app",
+            storageBucket: "nova-c2bfd.appspot.com",
             messagingSenderId: "964167973576",
             appId: "1:964167973576:web:5d8987c8386cf22ce083fd"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        // Initialize Firebase with error handling
+        let database;
+        let firebaseInitialized = false;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            firebaseInitialized = true;
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.error("Error initializing Firebase:", error);
+            firebaseInitialized = false;
+        }
 
         // DOM Elements
-        const pollingStatus = document.getElementById('pollingStatus');
+        const setupContainer = document.getElementById('setupContainer');
         const pollingContent = document.getElementById('pollingContent');
+        const boothStatus = document.getElementById('boothStatus');
+        const boothStatusText = document.getElementById('boothStatusText');
+        const boothNumberContainer = document.getElementById('boothNumberContainer');
+        const boothId = document.getElementById('boothId');
+        const boothStatusIndicator = document.getElementById('boothStatusIndicator');
+        const boothStatusIndicatorText = document.getElementById('boothStatusIndicatorText');
+        const electionIdInput = document.getElementById('electionIdInput');
+        const folderSelectionGroup = document.getElementById('folderSelectionGroup');
+        const folderPath = document.getElementById('folderPath');
+        const selectFolderBtn = document.getElementById('selectFolderBtn');
+        const folderInput = document.getElementById('folderInput');
+        const verifyElectionBtn = document.getElementById('verifyElectionBtn');
+        const setupBoothBtn = document.getElementById('setupBoothBtn');
+        const checklist = document.getElementById('checklist');
         const toast = document.getElementById('toast');
         const toastTitle = document.getElementById('toastTitle');
         const toastMessage = document.getElementById('toastMessage');
         const errorDetails = document.getElementById('errorDetails');
         const toastClose = document.getElementById('toastClose');
+        const notificationModal = document.getElementById('notificationModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        const firebaseConnectionStatus = document.getElementById('firebaseConnectionStatus');
+
+        // Status elements
+        const electionIcon = document.getElementById('electionIcon');
+        const electionStatus = document.getElementById('electionStatus');
+        const blockchainIcon = document.getElementById('blockchainIcon');
+        const blockchainStatus = document.getElementById('blockchainStatus');
+        const connectionIcon = document.getElementById('connectionIcon');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const firebaseIcon = document.getElementById('firebaseIcon');
+        const firebaseStatus = document.getElementById('firebaseStatus');
+        const folderIcon = document.getElementById('folderIcon');
+        const folderStatus = document.getElementById('folderStatus');
+        const boothLimitIcon = document.getElementById('boothLimitIcon');
+        const boothLimitStatus = document.getElementById('boothLimitStatus');
 
         // Toast timeout variable
         let toastTimeout;
 
-        // Election and voter data
+        // Booth and election data
         let electionData = {};
         let voterData = {};
         let candidates = {};
         let selectedCandidateId = null;
         let currentElectionId = null;
         let currentVoterId = null;
+        let currentBoothId = null;
+        let selectedDirectoryHandle = null;
+        let selectedFolderPath = null;
+        let html5QrCode = null;
+        let electionVerified = false;
+        let blockchainCreated = false;
+        let boothPingInterval = null;
+        let pollingStatusListener = null;
+        let electionDataListener = null;
+        let boothStatusListener = null;
+        let blockchainData = null;
 
-        // Check if polling is active
-        async function checkPollingStatus() {
+        // Check if File System Access API is supported
+        const isFileSystemAccessAPISupported = 'showDirectoryPicker' in window;
+
+        // Function to update booth status in Firebase immediately
+        function updateBoothStatus(status) {
+            if (currentElectionId && currentBoothId) {
+                const boothKey = 'booth_' + currentBoothId;
+                const data = {
+                    status: status,
+                    lastSeen: new Date().toISOString()
+                };
+
+                // Use PATCH method via fetch with keepalive for reliable updates during visibility change/unload
+                const url = `https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app/TRIBUNE/elections/${currentElectionId}/pollbooth/${boothKey}.json`;
+
+                fetch(url, {
+                    method: 'PATCH', // PATCH allows updating specific fields without overwriting others
+                    body: JSON.stringify(data),
+                    keepalive: true, // Ensures request completes even if page unloads
+                    headers: { 'Content-Type': 'application/json' }
+                }).catch(err => {
+                    console.log("Error updating booth status immediately:", err);
+                    // Fallback to sendBeacon only if fetch fails (less likely with PATCH)
+                    navigator.sendBeacon(url, JSON.stringify(data));
+                });
+            }
+        }
+
+        // Handle page visibility changes to update booth status instantly
+        document.addEventListener('visibilitychange', () => {
+            if (currentElectionId && currentBoothId) {
+                if (document.hidden) {
+                    // Page is hidden, update booth status to 'offline' IMMEDIATELY
+                    updateBoothStatus('offline');
+
+                    // Update local indicator
+                    if (boothStatusIndicator) {
+                        boothStatusIndicator.className = 'booth-status-indicator inactive';
+                        boothStatusIndicatorText.textContent = 'Offline';
+                    }
+                } else {
+                    // Page is visible again, update booth status to 'ready'
+                    updateBoothStatus('ready');
+
+                    // Update local indicator
+                    if (boothStatusIndicator) {
+                        boothStatusIndicator.className = 'booth-status-indicator ready';
+                        boothStatusIndicatorText.textContent = 'Ready';
+                    }
+                }
+            }
+        });
+
+        // Handle page unload to mark booth as offline
+        window.addEventListener('beforeunload', () => {
+            if (currentElectionId && currentBoothId) {
+                const boothKey = 'booth_' + currentBoothId;
+                const data = {
+                    status: 'offline',
+                    lastSeen: new Date().toISOString()
+                };
+                const url = `https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app/TRIBUNE/elections/${currentElectionId}/pollbooth/${boothKey}.json`;
+
+                // Use fetch with keepalive for best reliability in 'beforeunload'
+                // This is superior to sendBeacon because we can specify the method as PATCH
+                fetch(url, {
+                    method: 'PATCH',
+                    body: JSON.stringify(data),
+                    keepalive: true,
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            }
+        });
+
+        // Check internet connection
+        async function checkInternetConnection() {
             try {
-                // Get election ID from URL parameters
-                const urlParams = new URLSearchParams(window.location.search);
-                currentElectionId = urlParams.get('electionId');
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+                if (response.ok) {
+                    updateStatus('connection', true, 'Connected');
+                    return true;
+                } else {
+                    updateStatus('connection', false, 'Connection failed');
+                    return false;
+                }
+            } catch (error) {
+                updateStatus('connection', false, 'No internet connection');
+                return false;
+            }
+        }
 
-                if (!currentElectionId) {
-                    // If no election ID in URL, show a form to enter it
-                    showElectionIdForm();
+        // Check Firebase connection with improved error handling
+        async function checkFirebaseConnection() {
+            if (!firebaseInitialized) {
+                updateStatus('firebase', false, 'Firebase not initialized');
+                firebaseConnectionStatus.style.display = 'flex';
+                firebaseConnectionStatus.className = 'connection-status error';
+                return false;
+            }
+
+            try {
+                // Test connection by trying to read from .info/connected
+                const testRef = database.ref('.info/connected');
+
+                // Set up a one-time listener to check connection
+                return new Promise((resolve) => {
+                    const timeout = setTimeout(() => {
+                        updateStatus('firebase', false, 'Connection timeout');
+                        firebaseConnectionStatus.style.display = 'flex';
+                        firebaseConnectionStatus.className = 'connection-status error';
+                        resolve(false);
+                    }, 5000); // 5 second timeout
+
+                    testRef.once('value').then((snapshot) => {
+                        clearTimeout(timeout);
+
+                        if (snapshot.val() === true) {
+                            updateStatus('firebase', true, 'Connected');
+                            firebaseConnectionStatus.style.display = 'none';
+                            resolve(true);
+                        } else {
+                            updateStatus('firebase', false, 'Connection failed');
+                            firebaseConnectionStatus.style.display = 'flex';
+                            firebaseConnectionStatus.className = 'connection-status error';
+                            resolve(false);
+                        }
+                    }).catch((error) => {
+                        clearTimeout(timeout);
+                        console.error("Firebase connection error:", error);
+                        updateStatus('firebase', false, 'Connection error');
+                        firebaseConnectionStatus.style.display = 'flex';
+                        firebaseConnectionStatus.className = 'connection-status error';
+                        resolve(false);
+                    });
+                });
+            } catch (error) {
+                console.error("Error checking Firebase connection:", error);
+                updateStatus('firebase', false, 'Connection error');
+                firebaseConnectionStatus.style.display = 'flex';
+                firebaseConnectionStatus.className = 'connection-status error';
+                return false;
+            }
+        }
+
+        // Update status icon and text
+        function updateStatus(type, success, message) {
+            let icon, status;
+
+            switch (type) {
+                case 'election':
+                    icon = electionIcon;
+                    status = electionStatus;
+                    break;
+                case 'blockchain':
+                    icon = blockchainIcon;
+                    status = blockchainStatus;
+                    break;
+                case 'connection':
+                    icon = connectionIcon;
+                    status = connectionStatus;
+                    break;
+                case 'firebase':
+                    icon = firebaseIcon;
+                    status = firebaseStatus;
+                    break;
+                case 'folder':
+                    icon = folderIcon;
+                    status = folderStatus;
+                    break;
+                case 'boothLimit':
+                    icon = boothLimitIcon;
+                    status = boothLimitStatus;
+                    break;
+            }
+
+            icon.className = 'checklist-icon ' + (success ? 'success' : 'error');
+            icon.innerHTML = success ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>';
+            status.textContent = message;
+
+            checkAllStatuses();
+        }
+
+        // Check if all statuses are successful
+        function checkAllStatuses() {
+            const allSuccessful =
+                electionIcon.classList.contains('success') &&
+                blockchainIcon.classList.contains('success') &&
+                connectionIcon.classList.contains('success') &&
+                firebaseIcon.classList.contains('success') &&
+                folderIcon.classList.contains('success') &&
+                boothLimitIcon.classList.contains('success');
+
+            if (setupBoothBtn.style.display !== 'none') {
+                setupBoothBtn.disabled = !allSuccessful;
+            }
+        }
+
+        // Verify election and create blockchain collection
+        async function verifyElection() {
+            const electionId = electionIdInput.value.trim();
+
+            if (!electionId) {
+                showToast('Error', 'Please enter an election ID', 'error');
+                return;
+            }
+
+            // Show loading state
+            verifyElectionBtn.disabled = true;
+            verifyElectionBtn.innerHTML = '<span class="loading-spinner"></span> Verifying...';
+
+            try {
+                // Check Firebase connection first
+                const isConnected = await checkFirebaseConnection();
+                if (!isConnected) {
+                    showToast('Error', 'Cannot connect to Firebase. Please check your connection and try again.', 'error');
+                    verifyElectionBtn.disabled = false;
+                    verifyElectionBtn.innerHTML = '<i class="fas fa-search"></i> Verify Election';
                     return;
                 }
 
+                // Check if election exists
+                const electionRef = database.ref('TRIBUNE/elections/' + electionId);
+                const snapshot = await electionRef.once('value');
+
+                if (snapshot.exists()) {
+                    electionData = snapshot.val();
+                    updateStatus('election', true, 'Election found');
+                    electionVerified = true;
+
+                    // Check if blockchain collection exists
+                    const blockchainRef = database.ref('TRIBUNE/elections/' + electionId + '/blockchain');
+                    const blockchainSnapshot = await blockchainRef.once('value');
+
+                    if (!blockchainSnapshot.exists()) {
+                        // Create blockchain collection
+                        await blockchainRef.set({
+                            initialized: true,
+                            createdAt: new Date().toISOString()
+                        });
+                        updateStatus('blockchain', true, 'Blockchain created');
+                        blockchainCreated = true;
+                    } else {
+                        updateStatus('blockchain', true, 'Blockchain exists');
+                        blockchainCreated = true;
+                    }
+
+                    // Show folder selection and checklist
+                    folderSelectionGroup.style.display = 'block';
+                    checklist.style.display = 'block';
+                    verifyElectionBtn.style.display = 'none';
+                    setupBoothBtn.style.display = 'block';
+
+                    // Check internet connection
+                    await checkInternetConnection();
+
+                    // Check booth availability
+                    await checkBoothAvailability(electionId);
+
+                    showToast('Success', 'Election verified successfully', 'success');
+                } else {
+                    updateStatus('election', false, 'Election not found');
+                    showToast('Error', 'Election not found', 'error');
+                }
+            } catch (error) {
+                console.error('Error verifying election:', error);
+                updateStatus('election', false, 'Verification failed');
+                showToast('Error', 'Failed to verify election', 'error', error.message);
+            }
+
+            verifyElectionBtn.disabled = false;
+            verifyElectionBtn.innerHTML = '<i class="fas fa-search"></i> Verify Election';
+        }
+
+        // Check booth availability
+        async function checkBoothAvailability(electionId) {
+            if (!firebaseInitialized) {
+                updateStatus('boothLimit', false, 'Firebase not available');
+                return null;
+            }
+
+            try {
+                // Get total booths from election data
+                const totalBooths = parseInt(electionData.booths) || 1;
+
+                // Check current active booths in the new pollbooth section
+                const pollboothRef = database.ref('TRIBUNE/elections/' + electionId + '/pollbooth');
+                const pollboothSnapshot = await pollboothRef.once('value');
+
+                let activeBooths = 0;
+                let availableBoothNumber = null;
+
+                if (pollboothSnapshot.exists()) {
+                    const pollbooths = pollboothSnapshot.val();
+
+                    // Count active booths and find next available number
+                    for (let i = 1; i <= totalBooths; i++) {
+                        const boothKey = 'booth_' + i;
+                        if (pollbooths[boothKey]) {
+                            // Check if booth is actually online (recent ping)
+                            const booth = pollbooths[boothKey];
+                            const lastPing = booth.lastPing ? new Date(booth.lastPing) : null;
+                            const now = new Date();
+
+                            // Consider booth offline if no ping in the last 2 minutes OR status is explicitly offline
+                            if (booth.status === 'offline' || !lastPing || (now - lastPing) >= 2 * 60 * 1000) {
+                                // Booth is offline, slot is available
+                                if (!availableBoothNumber) {
+                                    availableBoothNumber = i;
+                                }
+                            } else {
+                                // Booth is online and active
+                                if (booth.status === 'active' || booth.status === 'ready' || booth.status === 'idle') {
+                                    activeBooths++;
+                                }
+                            }
+                        } else if (!availableBoothNumber) {
+                            availableBoothNumber = i;
+                        }
+                    }
+                } else {
+                    // No booths yet, first one is available
+                    availableBoothNumber = 1;
+                }
+
+                if (activeBooths < totalBooths && availableBoothNumber) {
+                    updateStatus('boothLimit', true, `Booth ${availableBoothNumber} available`);
+                    return availableBoothNumber;
+                } else {
+                    updateStatus('boothLimit', false, `All ${totalBooths} booths are already active`);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error checking booth availability:", error);
+                updateStatus('boothLimit', false, 'Error checking booth availability');
+                return null;
+            }
+        }
+
+        // Show modal notification
+        function showModal(title, content) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = content;
+            notificationModal.style.display = 'flex';
+        }
+
+        // Hide modal notification
+        function hideModal() {
+            notificationModal.style.display = 'none';
+        }
+
+        // Folder selection
+        selectFolderBtn.addEventListener('click', async () => {
+            try {
+                if (isFileSystemAccessAPISupported) {
+                    // Use File System Access API
+                    selectedDirectoryHandle = await window.showDirectoryPicker();
+                    selectedFolderPath = selectedDirectoryHandle.name;
+                    folderPath.textContent = selectedFolderPath;
+                    updateStatus('folder', true, 'Folder accessible');
+                } else {
+                    // Fallback to input element
+                    folderInput.click();
+                }
+            } catch (error) {
+                console.error('Error selecting folder:', error);
+                updateStatus('folder', false, 'Folder access denied');
+                showToast('Error', 'Failed to select folder', 'error');
+            }
+        });
+
+        // Handle folder input change (fallback)
+        folderInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                // Get path from first file (all files are in same directory)
+                const path = e.target.files[0].webkitRelativePath.split('/')[0];
+                selectedFolderPath = path;
+                folderPath.textContent = path;
+                updateStatus('folder', true, 'Folder accessible');
+            } else {
+                selectedFolderPath = null;
+                folderPath.textContent = 'No folder selected';
+                updateStatus('folder', false, 'No folder selected');
+            }
+        });
+
+        // Verify election button
+        verifyElectionBtn.addEventListener('click', verifyElection);
+
+        // Setup booth button
+        setupBoothBtn.addEventListener('click', async () => {
+            const electionId = electionIdInput.value.trim();
+
+            if (!electionId) {
+                showToast('Error', 'Please enter an election ID', 'error');
+                return;
+            }
+
+            if (!selectedFolderPath) {
+                showToast('Error', 'Please select a folder for blockchain storage', 'error');
+                return;
+            }
+
+            // Check Firebase connection again
+            const isConnected = await checkFirebaseConnection();
+            if (!isConnected) {
+                showToast('Error', 'Cannot connect to Firebase. Please check your connection and try again.', 'error');
+                return;
+            }
+
+            // Check booth availability again to get the booth number
+            const boothNumber = await checkBoothAvailability(electionId);
+
+            if (!boothNumber) {
+                showToast('Error', 'No booth available for this election', 'error');
+                return;
+            }
+
+            try {
+                // Register this booth in Firebase using the new pollbooth section
+                const boothKey = 'booth_' + boothNumber;
+                const boothData = {
+                    status: 'ready',
+                    registeredAt: new Date().toISOString(),
+                    lastPing: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    sessionId: generateSessionId()
+                };
+
+                await database.ref('TRIBUNE/elections/' + electionId + '/pollbooth/' + boothKey).set(boothData);
+
+                // Create blockchain file
+                await createBlockchainFile(electionId, boothNumber);
+
+                // Update booth status
+                currentElectionId = electionId;
+                currentBoothId = boothNumber;
+
+                boothStatus.classList.remove('inactive');
+                boothStatus.classList.add('ready');
+                boothStatusText.textContent = 'Ready';
+
+                // Fix: Check if boothNumberContainer exists before setting its style
+                if (boothNumberContainer) {
+                    boothNumberContainer.style.display = 'block';
+                    boothId.textContent = boothNumber;
+                }
+
+                // Show success modal
+                showModal('Booth Setup Successful', `
+                    <p>Your booth has been successfully registered as:</p>
+                    <p><strong>Election ID:</strong> ${electionId}</p>
+                    <p><strong>Booth Number:</strong> ${boothNumber}</p>
+                    <p><strong>Status:</strong> Ready</p>
+                    <p>The admin will be notified and can activate polling when all booths are ready.</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="setupProgress"></div>
+                    </div>
+                `);
+
+                // Animate progress bar
+                const progressBar = document.getElementById('setupProgress');
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            hideModal();
+                            setupContainer.style.display = 'none';
+                            pollingContent.style.display = 'block';
+                            boothStatusIndicator.style.display = 'flex';
+                            initializePolling();
+                            startBoothPing(electionId, boothNumber);
+                        }, 1000);
+                    } else {
+                        width += 10;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 100);
+
+            } catch (error) {
+                console.error('Error setting up booth:', error);
+                showToast('Error', 'Failed to setup booth', 'error', error.message);
+            }
+        });
+
+        // Start booth ping to keep status updated
+        function startBoothPing(electionId, boothNumber) {
+            const boothKey = 'booth_' + boothNumber;
+
+            // Initial ping
+            database.ref('TRIBUNE/elections/' + electionId + '/pollbooth/' + boothKey).update({
+                lastPing: new Date().toISOString()
+            });
+
+            // Set up regular pings every 30 seconds
+            boothPingInterval = setInterval(() => {
+                database.ref('TRIBUNE/elections/' + electionId + '/pollbooth/' + boothKey).update({
+                    lastPing: new Date().toISOString()
+                });
+            }, 30000);
+        }
+
+        // Generate a unique session ID for this booth
+        function generateSessionId() {
+            return 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        }
+
+        // Create blockchain file with NEW STRUCTURE
+        async function createBlockchainFile(electionId, boothNumber) {
+            try {
+                // Structure requirements:
+                // - Hash timestamp
+                // - previousHash
+                // - hash
+                // - nextHash (empty for genesis)
+                // - vote object (candidate info plain, voter info hashed)
+
+                const genesisTimestamp = new Date().toISOString();
+                const genesisTimestampHash = CryptoJS.SHA256(genesisTimestamp).toString();
+                const genesisPrevHash = "0";
+
+                // Calculate genesis hash: timestampHash + prevHash + "Genesis Block"
+                const genesisContent = genesisTimestampHash + genesisPrevHash + "Genesis Block";
+                const genesisHash = CryptoJS.SHA256(genesisContent).toString();
+
+                const genesisBlock = {
+                    timestamp: genesisTimestampHash,
+                    previousHash: genesisPrevHash,
+                    hash: genesisHash,
+                    nextHash: "",
+                    vote: "Genesis Block for " + electionId + " at booth " + boothNumber
+                };
+
+                // Initialize blockchain data with genesis block
+                blockchainData = {
+                    electionId: electionId,
+                    boothNumber: boothNumber,
+                    createdAt: new Date().toISOString(),
+                    chain: [genesisBlock]
+                };
+
+                if (isFileSystemAccessAPISupported && selectedDirectoryHandle) {
+                    // Use File System Access API
+                    const fileHandle = await selectedDirectoryHandle.getFileHandle('blockchain.json', { create: true });
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(JSON.stringify(blockchainData, null, 2));
+                    await writable.close();
+                } else {
+                    // Fallback to localStorage for demo
+                    localStorage.setItem('blockchainData', JSON.stringify(blockchainData));
+                    console.log('Creating blockchain file in:', selectedFolderPath);
+                    console.log('Blockchain data:', blockchainData);
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Error creating blockchain file:', error);
+                throw error;
+            }
+        }
+
+        // Calculate hash for a block based on new structure requirements
+        function calculateBlockHash(timestampHash, previousHash, voteDataString) {
+            // Logic: hash( timestampHash + previousHash + voteDataString )
+            const content = timestampHash + previousHash + voteDataString;
+            return CryptoJS.SHA256(content).toString();
+        }
+
+        // Initialize polling after booth setup
+        async function initializePolling() {
+            if (!firebaseInitialized) {
+                showToast('Error', 'Firebase is not initialized. Please refresh the page.', 'error');
+                return;
+            }
+
+            try {
+                // Load existing blockchain data if available
+                await loadBlockchainData();
+
+                // Check if polling is active
                 const electionRef = database.ref('TRIBUNE/elections/' + currentElectionId);
                 const snapshot = await electionRef.once('value');
 
@@ -607,14 +1621,25 @@
 
                     // Update polling status
                     if (electionData.isActive) {
-                        pollingStatus.classList.remove('inactive');
-                        pollingStatus.classList.add('active');
-                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Active';
+                        boothStatus.classList.remove('ready');
+                        boothStatus.classList.add('active');
+                        boothStatusText.textContent = 'Active';
+
+                        // Update local indicator
+                        boothStatusIndicator.className = 'booth-status-indicator active';
+                        boothStatusIndicatorText.textContent = 'Active';
                     } else {
-                        pollingStatus.classList.remove('active');
-                        pollingStatus.classList.add('inactive');
-                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Inactive';
+                        boothStatus.classList.remove('active');
+                        boothStatus.classList.add('ready');
+                        boothStatusText.textContent = 'Ready';
+
+                        // Update local indicator
+                        boothStatusIndicator.className = 'booth-status-indicator ready';
+                        boothStatusIndicatorText.textContent = 'Ready';
                     }
+
+                    // Set up real-time listener for polling status changes
+                    setupPollingStatusListener();
 
                     // Show verification methods if polling is active
                     if (electionData.isActive) {
@@ -622,43 +1647,76 @@
                     } else {
                         showPollingInactive();
                     }
-                } else {
-                    showToast('Error', 'Election not found', 'error');
-                    showElectionIdForm();
                 }
             } catch (error) {
-                console.error('Error checking polling status:', error);
-                showToast('Error', 'Failed to check polling status', 'error');
+                console.error('Error initializing polling:', error);
+                showToast('Error', 'Failed to initialize polling', 'error');
             }
         }
 
-        // Show election ID form
-        function showElectionIdForm() {
-            pollingContent.innerHTML = `
-                <div class="verification-form active">
-                    <div class="form-group">
-                        <label class="form-label" for="electionIdInput">Election ID</label>
-                        <input type="text" class="form-input" id="electionIdInput" placeholder="Enter election ID">
-                    </div>
-                    <button class="btn btn-primary btn-block" id="submitElectionIdBtn">
-                        <i class="fas fa-arrow-right"></i>
-                        Continue
-                    </button>
-                </div>
-            `;
-
-            document.getElementById('submitElectionIdBtn').addEventListener('click', () => {
-                const electionIdInput = document.getElementById('electionIdInput').value.trim();
-
-                if (electionIdInput) {
-                    // Update URL with election ID
-                    const newUrl = window.location.pathname + '?electionId=' + encodeURIComponent(electionIdInput);
-                    window.history.replaceState({}, '', newUrl);
-
-                    // Check polling status again
-                    checkPollingStatus();
+        // Load blockchain data from file or localStorage
+        async function loadBlockchainData() {
+            try {
+                if (isFileSystemAccessAPISupported && selectedDirectoryHandle) {
+                    // Use File System Access API
+                    const fileHandle = await selectedDirectoryHandle.getFileHandle('blockchain.json');
+                    const file = await fileHandle.getFile();
+                    const contents = await file.text();
+                    blockchainData = JSON.parse(contents);
                 } else {
-                    showToast('Error', 'Please enter an election ID', 'error');
+                    // Fallback to localStorage for demo
+                    const storedData = localStorage.getItem('blockchainData');
+                    if (storedData) {
+                        blockchainData = JSON.parse(storedData);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading blockchain data:', error);
+                // If loading fails, create a new blockchain
+                await createBlockchainFile(currentElectionId, currentBoothId);
+            }
+        }
+
+        // Set up real-time listener for polling status changes
+        function setupPollingStatusListener() {
+            if (pollingStatusListener) {
+                database.ref('TRIBUNE/elections/' + currentElectionId + '/isActive').off('value', pollingStatusListener);
+            }
+
+            pollingStatusListener = database.ref('TRIBUNE/elections/' + currentElectionId + '/isActive').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const isActive = snapshot.val();
+
+                    if (isActive) {
+                        boothStatus.classList.remove('ready');
+                        boothStatus.classList.add('active');
+                        boothStatusText.textContent = 'Active';
+
+                        // Update local indicator
+                        boothStatusIndicator.className = 'booth-status-indicator active';
+                        boothStatusIndicatorText.textContent = 'Active';
+
+                        // If we're in the setup screen, switch to polling
+                        if (setupContainer.style.display !== 'none') {
+                            setupContainer.style.display = 'none';
+                            pollingContent.style.display = 'block';
+                            showVerificationMethods();
+                        }
+                    } else {
+                        boothStatus.classList.remove('active');
+                        boothStatus.classList.add('ready');
+                        boothStatusText.textContent = 'Ready';
+
+                        // Update local indicator
+                        boothStatusIndicator.className = 'booth-status-indicator ready';
+                        boothStatusIndicatorText.textContent = 'Ready';
+
+                        // If we're in the polling screen, switch to inactive
+                        if (pollingContent.style.display !== 'none') {
+                            pollingContent.innerHTML = '';
+                            showPollingInactive();
+                        }
+                    }
                 }
             });
         }
@@ -677,12 +1735,19 @@
                 </div>
             `;
 
-            document.getElementById('refreshStatusBtn').addEventListener('click', checkPollingStatus);
+            document.getElementById('refreshStatusBtn').addEventListener('click', () => {
+                initializePolling();
+            });
         }
 
         // Show verification methods
         function showVerificationMethods() {
             pollingContent.innerHTML = `
+                <div class="polling-header">
+                    <h1 class="polling-title">Secure Voting Portal</h1>
+                    <p class="polling-subtitle">Verify your identity to cast your vote</p>
+                </div>
+
                 <div class="verification-methods">
                     <div class="verification-method" id="qrMethod">
                         <div class="verification-icon">
@@ -703,10 +1768,7 @@
                 
                 <div class="verification-form" id="qrForm">
                     <div class="qr-scanner">
-                        <div class="qr-video">
-                            <i class="fas fa-qrcode" style="font-size: 4rem;"></i>
-                            <p>QR Scanner Placeholder</p>
-                        </div>
+                        <div id="qr-reader"></div>
                         <div class="manual-input">
                             <p>Or enter your voter ID manually:</p>
                             <input type="text" class="form-input" id="voterIdInput" placeholder="Enter your voter ID">
@@ -730,6 +1792,9 @@
                 </div>
             `;
 
+            // Initialize QR scanner
+            initializeQRScanner();
+
             // Add event listeners
             document.getElementById('qrMethod').addEventListener('click', () => {
                 document.querySelectorAll('.verification-method').forEach(method => {
@@ -741,6 +1806,9 @@
 
                 document.getElementById('qrMethod').classList.add('active');
                 document.getElementById('qrForm').classList.add('active');
+
+                // Start QR scanner
+                startQRScanner();
             });
 
             document.getElementById('manualMethod').addEventListener('click', () => {
@@ -753,6 +1821,9 @@
 
                 document.getElementById('manualMethod').classList.add('active');
                 document.getElementById('manualForm').classList.add('active');
+
+                // Stop QR scanner
+                stopQRScanner();
             });
 
             document.getElementById('verifyVoterIdBtn').addEventListener('click', () => {
@@ -777,8 +1848,71 @@
             document.getElementById('qrMethod').click();
         }
 
+        // Initialize QR Scanner
+        function initializeQRScanner() {
+            html5QrCode = new Html5Qrcode("qr-reader");
+        }
+
+        // Start QR Scanner
+        function startQRScanner() {
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0
+            };
+
+            // This method will try to scan using the camera
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                (decodedText, decodedResult) => {
+                    // Do something with the decoded text
+                    document.getElementById('voterIdInput').value = decodedText;
+                    verifyVoter(decodedText);
+                },
+                (errorMessage) => {
+                    // Parse error, ignore it
+                }
+            ).catch((err) => {
+                // Start failed, handle it
+                console.error(`Unable to start scanning: ${err}`);
+                showToast('Error', 'Unable to access camera', 'error');
+
+                // Fallback to file-based scanning
+                document.getElementById('qr-reader').innerHTML = `
+                    <div style="padding: 2rem; text-align: center;">
+                        <i class="fas fa-camera" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-secondary);">Camera access denied or unavailable</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Please use manual entry instead</p>
+                        <button class="btn btn-secondary" id="switchToManualBtn">
+                            <i class="fas fa-keyboard"></i>
+                            Switch to Manual Entry
+                        </button>
+                    </div>
+                `;
+
+                document.getElementById('switchToManualBtn').addEventListener('click', () => {
+                    document.getElementById('manualMethod').click();
+                });
+            });
+        }
+
+        // Stop QR Scanner
+        function stopQRScanner() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().catch((err) => {
+                    console.error(`Failed to stop scanning: ${err}`);
+                });
+            }
+        }
+
         // Verify voter
         async function verifyVoter(voterId) {
+            if (!firebaseInitialized) {
+                showToast('Error', 'Firebase is not initialized. Please refresh the page.', 'error');
+                return;
+            }
+
             try {
                 const voterRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + voterId);
                 const snapshot = await voterRef.once('value');
@@ -802,8 +1936,8 @@
                         otpExpiry: new Date(Date.now() + 2 * 60000).toISOString() // OTP valid for 2 minutes
                     });
 
-                    // Show OTP form
-                    showOtpForm(otp);
+                    // Show OTP form (without displaying the OTP)
+                    showOtpForm();
                 } else {
                     showToast('Error', 'Invalid voter ID', 'error');
                 }
@@ -813,19 +1947,14 @@
             }
         }
 
-        // Show OTP form
-        function showOtpForm(otp) {
+        // Show OTP form (without displaying) OTP
+        function showOtpForm() {
             pollingContent.innerHTML = `
                 <div class="verification-form active">
                     <div style="text-align: center; margin-bottom: 2rem;">
                         <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
                         <h2>Verify Your Identity</h2>
                         <p style="color: var(--text-secondary);">A one-time password has been sent to your dashboard</p>
-                        <div style="margin-top: 1.5rem;">
-                            <p style="font-size: 0.875rem; color: var(--text-secondary);">Your OTP is:</p>
-                            <div style="font-size: 2rem; font-weight: 700; letter-spacing: 0.5rem; margin: 0.5rem 0; color: var(--primary);">${otp}</div>
-                            <p style="color: var(--text-secondary);">This OTP is valid for 2 minutes</p>
-                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -864,7 +1993,12 @@
             document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
                 const enteredOtp = document.getElementById('otpInput').value.trim();
 
-                if (enteredOtp === otp) {
+                // Get the stored OTP from Firebase
+                const voterRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + currentVoterId);
+                const snapshot = await voterRef.once('value');
+                const storedOtp = snapshot.val().otp;
+
+                if (enteredOtp === storedOtp) {
                     clearInterval(countdownInterval);
 
                     try {
@@ -885,6 +2019,11 @@
 
         // Load candidates
         async function loadCandidates() {
+            if (!firebaseInitialized) {
+                showToast('Error', 'Firebase is not initialized. Please refresh the page.', 'error');
+                return;
+            }
+
             try {
                 const candidatesRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/candidates');
                 const snapshot = await candidatesRef.once('value');
@@ -925,12 +2064,10 @@
                     </div>
                     <div style="margin-top: 2rem; display: flex; gap: 1rem;">
                         <button class="btn btn-secondary" id="backBtn" style="flex: 1;">
-                            <i class="fas fa-arrow-left"></i>
-                            Back
+                            <i class="fas fa-arrow-left"></i> Back
                         </button>
                         <button class="btn btn-success" id="confirmVoteBtn" style="flex: 1;" disabled>
-                            <i class="fas fa-check"></i>
-                            Confirm Vote
+                            <i class="fas fa-check"></i> Confirm Vote
                         </button>
                     </div>
                 </div>
@@ -994,6 +2131,11 @@
 
         // Cast vote
         async function castVote() {
+            if (!firebaseInitialized) {
+                showToast('Error', 'Firebase is not initialized. Please refresh the page.', 'error');
+                return;
+            }
+
             try {
                 // Check if polling is active
                 if (!electionData.isActive) {
@@ -1001,27 +2143,118 @@
                     return;
                 }
 
-                // Check if voter has already voted
-                if (voterData.hasVoted) {
+                // Check if voter has already voted (double check)
+                const voterRef = database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + currentVoterId);
+                const voterSnapshot = await voterRef.once('value');
+                const currentVoterData = voterSnapshot.val();
+
+                if (currentVoterData.hasVoted) {
                     showToast('Error', 'You have already voted', 'error');
                     return;
                 }
 
-                // Cast the vote
+                // Get the last block from the existing chain to link to it
+                const chain = blockchainData.chain;
+                const lastBlock = chain[chain.length - 1];
+                const previousBlockHash = lastBlock.hash;
+
+                // Generate a unique timestamp
+                const voteTimestamp = new Date().toISOString();
+
+                // 1. Hash the timestamp
+                const timestampHash = CryptoJS.SHA256(voteTimestamp).toString();
+
+                // 2. Hash Voter ID (with salt)
+                const voterIdSalt = CryptoJS.lib.WordArray.random(16).toString();
+                const voterIdHash = CryptoJS.SHA256(currentVoterId + voterIdSalt).toString();
+
+                // 3. Prepare vote data (Candidate details plain, Voter ID hashed)
+                const voteDataObject = {
+                    voteId: voterIdHash,
+                    timestampSalt: CryptoJS.lib.WordArray.random(16).toString(),
+                    candidateId: selectedCandidateId,
+                    candidateName: candidates[selectedCandidateId].name,
+                    boothNumber: parseInt(currentBoothId),
+                    electionId: currentElectionId
+                };
+
+                // 4. Calculate Current Block Hash
+                // We hash: timestampHash + previousHash + stringified vote object
+                const blockContentString = timestampHash + previousBlockHash + JSON.stringify(voteDataObject);
+                const currentHash = CryptoJS.SHA256(blockContentString).toString();
+
+                // 5. Construct the new block
+                const newBlock = {
+                    timestamp: timestampHash,
+                    previousHash: previousBlockHash,
+                    hash: currentHash,
+                    nextHash: "", // Empty for the new tip of the chain
+                    vote: voteDataObject
+                };
+
+                // 6. CRITICAL FIX: Update the previous block's nextHash
+                // The chain is doubly linked now. The last block in memory needs to point to this new one.
+                lastBlock.nextHash = currentHash;
+
+                // Add the new block to the blockchain array
+                blockchainData.chain.push(newBlock);
+
+                // Save blockchain to file
+                if (isFileSystemAccessAPISupported && selectedDirectoryHandle) {
+                    try {
+                        const fileHandle = await selectedDirectoryHandle.getFileHandle('blockchain.json', { create: true });
+                        const writable = await fileHandle.createWritable();
+                        await writable.write(JSON.stringify(blockchainData, null, 2));
+                        await writable.close();
+                    } catch (error) {
+                        console.error('Error saving to blockchain file:', error);
+                        showToast('Error', 'Failed to save vote to blockchain', 'error');
+                        return;
+                    }
+                } else {
+                    // Fallback to localStorage for demo
+                    localStorage.setItem('blockchainData', JSON.stringify(blockchainData));
+                    console.log('Recording vote to blockchain:', newBlock);
+                }
+
+                // Cast the vote in Firebase (Results tab)
                 await database.ref('TRIBUNE/elections/' + currentElectionId + '/results/' + selectedCandidateId).transaction(currentVotes => {
                     return (currentVotes || 0) + 1;
                 });
 
+                // Add to blockchain collection in Firebase for verification (Syncing only necessary fields)
+                await database.ref('TRIBUNE/elections/' + currentElectionId + '/blockchain').push({
+                    voteId: voterIdHash,
+                    timestamp: voteTimestamp,
+                    candidateName: candidates[selectedCandidateId].name,
+                    boothNumber: parseInt(currentBoothId),
+                    electionId: currentElectionId
+                });
+
+                // Update booth vote count in the new pollbooth section
+                const boothKey = 'booth_' + currentBoothId;
+                await database.ref('TRIBUNE/elections/' + currentElectionId + '/pollbooth/' + boothKey + '/voteCount').transaction(currentCount => {
+                    return (currentCount || 0) + 1;
+                });
+
                 // Mark voter as having voted
-                await database.ref('TRIBUNE/elections/' + currentElectionId + '/voters/' + currentVoterId).update({
+                await voterRef.update({
                     hasVoted: true,
                     votedFor: selectedCandidateId,
                     otp: null,
                     otpExpiry: null
                 });
 
+                // Store vote confirmation data for dashboard (optional, if needed)
+                await voterRef.update({
+                    voteConfirmation: {
+                        candidateName: candidates[selectedCandidateId].name,
+                        timestamp: new Date().toISOString()
+                    }
+                });
+
                 // Show success message
-                showToast('Success', `Your vote has been successfully cast for ${candidates[selectedCandidateId].name}`, 'success');
+                showToast('Success', `Your vote has been successfully cast`, 'success');
 
                 // Show vote confirmation
                 showVoteConfirmation();
@@ -1037,19 +2270,16 @@
                 <div style="text-align: center; padding: 2rem;">
                     <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;"></i>
                     <h2>Vote Successfully Cast</h2>
-                    <p style="margin: 1rem 0; color: var(--text-secondary);">Your vote has been recorded for:</p>
-                    <div style="margin: 1rem 0; font-size: 1.25rem; font-weight: 600;">${candidates[selectedCandidateId].name}</div>
-                    <div style="color: var(--text-secondary); margin-bottom: 2rem;">${candidates[selectedCandidateId].party}</div>
+                    <p style="margin: 1rem 0; color: var(--text-secondary);">Your vote has been recorded successfully</p>
                     <button class="btn btn-primary" id="finishBtn">
-                        <i class="fas fa-check"></i>
-                        Finish
+                        <i class="fas fa-check"></i> Finish
                     </button>
                 </div>
             `;
 
             document.getElementById('finishBtn').addEventListener('click', () => {
-                // Redirect to voter dashboard
-                window.location.href = 'voter-dashboard.html';
+                // Reset to voter ID entry for next voter
+                showVerificationMethods();
             });
         }
 
@@ -1101,8 +2331,44 @@
             }
         }
 
-        // Initial check
-        checkPollingStatus();
+        // Modal close button
+        closeModal.addEventListener('click', hideModal);
+
+        // Toast close button
+        toastClose.addEventListener('click', hideToast);
+
+        // Initial checks
+        checkInternetConnection();
+        checkFirebaseConnection();
+
+        // Initialize the page
+        window.addEventListener('load', () => {
+            // Check if there's already a booth session in localStorage
+            const savedElectionId = localStorage.getItem('currentElectionId');
+            const savedBoothId = localStorage.getItem('currentBoothId');
+
+            if (savedElectionId && savedBoothId) {
+                // Restore previous session
+                electionIdInput.value = savedElectionId;
+                currentElectionId = savedElectionId;
+                currentBoothId = savedBoothId;
+
+                // Verify the election and set up the booth
+                verifyElection().then(() => {
+                    if (electionVerified) {
+                        setupBoothBtn.click();
+                    }
+                });
+            }
+        });
+
+        // Save session to localStorage when booth is set up
+        window.addEventListener('beforeunload', () => {
+            if (currentElectionId && currentBoothId) {
+                localStorage.setItem('currentElectionId', currentElectionId);
+                localStorage.setItem('currentBoothId', currentBoothId);
+            }
+        });
     </script>
 </body>
 
