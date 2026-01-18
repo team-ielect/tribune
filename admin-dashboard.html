@@ -54,6 +54,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -226,6 +227,12 @@
             box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
 
+        .btn-primary:disabled {
+            background: var(--dark-tertiary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .btn-secondary {
             background: transparent;
             color: var(--primary);
@@ -240,6 +247,12 @@
         .btn-success {
             background: var(--success);
             color: white;
+        }
+
+        .btn-success:disabled {
+            background: var(--dark-tertiary);
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-danger {
@@ -666,6 +679,253 @@
             flex: 1;
         }
 
+        .booth-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .booth-card {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .booth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .booth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .booth-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .booth-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .booth-status.ready {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .booth-status.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+        }
+
+        .booth-status.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .booth-status.offline {
+            background: rgba(107, 114, 128, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .booth-status.idle {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .booth-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .booth-detail {
+            font-size: 0.875rem;
+        }
+
+        .booth-detail-label {
+            color: var(--text-secondary);
+        }
+
+        .booth-detail-value {
+            font-weight: 500;
+        }
+
+        .results-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .results-card {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .match-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .match-indicator.match {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .match-indicator.mismatch {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .countdown-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        .countdown-timer i {
+            font-size: 1.25rem;
+        }
+
+        .confirm-dialog {
+            background: var(--dark-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .confirm-dialog-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-dialog-message {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .confirm-dialog-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .booth-management {
+            margin-top: 2rem;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .booth-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .booth-management-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .booth-config {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .booth-config-item {
+            flex: 1;
+        }
+
+        .booth-config-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .booth-config-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .add-booth-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-booth-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 1024px) {
             main {
                 flex-direction: column;
@@ -709,6 +969,20 @@
                 right: 1rem;
                 left: 1rem;
                 max-width: none;
+            }
+
+            .results-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .user-info {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -859,8 +1133,12 @@
                             <div id="electionLocation">-</div>
                         </div>
                         <div>
-                            <div class="stat-title">Booths</div>
+                            <div class="stat-title">Total Booths</div>
                             <div id="electionBooths">-</div>
+                        </div>
+                        <div>
+                            <div class="stat-title">Active Booths</div>
+                            <div id="activeBooths">0</div>
                         </div>
                     </div>
                 </div>
@@ -982,7 +1260,11 @@
                 <div class="content-header">
                     <h1 class="content-title">Polling Management</h1>
                     <div>
-                        <button class="btn btn-success" id="activatePollingBtn">
+                        <button class="btn btn-primary" id="openPollingPageBtn">
+                            <i class="fas fa-external-link-alt"></i>
+                            Open Polling Page
+                        </button>
+                        <button class="btn btn-success" id="activatePollingBtn" disabled>
                             <i class="fas fa-play"></i>
                             Activate Polling
                         </button>
@@ -990,7 +1272,7 @@
                             <i class="fas fa-stop"></i>
                             Deactivate Polling
                         </button>
-                        <button class="btn btn-warning" id="testPollingBtn">
+                        <button class="btn btn-warning" id="testPollingBtn" disabled>
                             <i class="fas fa-flask"></i>
                             Test Mode
                         </button>
@@ -1048,6 +1330,47 @@
                             <div class="stat-title">Remaining Voters</div>
                             <div id="remainingVoters">0</div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="booth-management">
+                    <div class="booth-management-header">
+                        <h2 class="booth-management-title">Booth Management</h2>
+                        <button class="btn btn-success" id="addBoothBtn">
+                            <i class="fas fa-plus"></i>
+                            Add Booth
+                        </button>
+                    </div>
+
+                    <div class="booth-config">
+                        <div class="booth-config-item">
+                            <div class="booth-config-label">Total Booths Allowed</div>
+                            <div class="booth-config-value" id="totalBoothsAllowed">0</div>
+                        </div>
+                        <div class="booth-config-item">
+                            <div class="booth-config-label">Active Booths</div>
+                            <div class="booth-config-value" id="activeBoothsCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Booth Status</div>
+                            <div class="stat-icon primary">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                        </div>
+                        <div id="boothStatusContainer">
+                            <!-- Booth status will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="countdownContainer" style="display: none; margin-top: 1rem;">
+                    <div class="countdown-timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="countdownText">Polling will start automatically in: </span>
+                        <span id="countdownTime">--:--:--</span>
                     </div>
                 </div>
             </div>
@@ -1207,6 +1530,37 @@
         </div>
     </div>
 
+    <!-- Add Booth Modal -->
+    <div class="modal" id="addBoothModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Booth</h2>
+                <button class="close-btn" id="closeAddBoothModal">&times;</button>
+            </div>
+
+            <form id="addBoothForm">
+                <div class="form-group">
+                    <label class="form-label" for="newBoothNumber">Booth Number</label>
+                    <input type="number" class="form-input" id="newBoothNumber" min="1" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Booth</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="confirm-dialog">
+            <h2 class="confirm-dialog-title" id="confirmTitle">Confirm Action</h2>
+            <p class="confirm-dialog-message" id="confirmMessage">Are you sure you want to proceed?</p>
+            <div class="confirm-dialog-buttons">
+                <button class="btn btn-secondary" id="confirmCancel">Cancel</button>
+                <button class="btn btn-primary" id="confirmOk">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle toast-icon"></i>
@@ -1231,7 +1585,7 @@
             authDomain: "nova-c2bfd.firebaseapp.com",
             databaseURL: "https://nova-c2bfd-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "nova-c2bfd",
-            storageBucket: "nova-c2bfd.firebasestorage.app",
+            storageBucket: "nova-c2bfd.appspot.com",
             messagingSenderId: "964167973576",
             appId: "1:964167973576:web:5d8987c8386cf22ce083fd"
         };
@@ -1256,8 +1610,22 @@
         const errorDetails = document.getElementById('errorDetails');
         const toastClose = document.getElementById('toastClose');
 
+        // Confirmation modal elements
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmCancel = document.getElementById('confirmCancel');
+        const confirmOk = document.getElementById('confirmOk');
+
         // Toast timeout variable
         let toastTimeout;
+        let countdownInterval = null;
+        let confirmCallback = null;
+        let boothStatusInterval = null;
+        let electionDataListener = null;
+        let boothStatusListener = null;
+        let votersListener = null;
+        let resultsListener = null;
 
         // Tab switching
         menuLinks.forEach(link => {
@@ -1277,14 +1645,28 @@
 
         // Logout functionality
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('username');
-            localStorage.removeItem('electionId');
-            window.location.href = 'login.html';
+            showConfirmDialog('Logout', 'Are you sure you want to logout?', () => {
+                localStorage.removeItem('username');
+                localStorage.removeItem('electionId');
+                window.location.href = 'login.html';
+            });
         });
 
         // Toast close button
         toastClose.addEventListener('click', () => {
             hideToast();
+        });
+
+        // Confirmation modal event listeners
+        confirmCancel.addEventListener('click', () => {
+            hideConfirmDialog();
+        });
+
+        confirmOk.addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            hideConfirmDialog();
         });
 
         // Check if user is logged in
@@ -1303,6 +1685,7 @@
         let candidates = {};
         let voters = {};
         let results = {};
+        let pollbooths = {}; // Changed from 'booths' to 'pollbooths' to avoid confusion
 
         // Load election data
         async function loadElectionData() {
@@ -1320,6 +1703,7 @@
                     document.getElementById('electionTime').textContent = `${electionData.startTime} - ${electionData.endTime}`;
                     document.getElementById('electionLocation').textContent = electionData.location;
                     document.getElementById('electionBooths').textContent = electionData.booths;
+                    document.getElementById('totalBoothsAllowed').textContent = electionData.booths;
 
                     // Update election tab
                     document.getElementById('electionIdDisplay').textContent = electionId;
@@ -1361,8 +1745,14 @@
                     // Load results
                     await loadResults();
 
+                    // Load booth status from the new pollbooth section
+                    await loadBoothStatus();
+
                     // Update polling statistics
                     await updatePollingStats();
+
+                    // Check for scheduled polling start
+                    checkScheduledPolling();
                 } else {
                     showToast('Error', 'Election not found', 'error');
                     window.location.href = 'login.html';
@@ -1438,10 +1828,15 @@
         // Load voters with real-time listener
         function loadVoters() {
             try {
+                // Remove any existing listener
+                if (votersListener) {
+                    database.ref('TRIBUNE/elections/' + electionId + '/voters').off('value', votersListener);
+                }
+
                 const votersRef = database.ref('TRIBUNE/elections/' + electionId + '/voters');
 
                 // Set up real-time listener for voters
-                votersRef.on('value', (snapshot) => {
+                votersListener = votersRef.on('value', (snapshot) => {
                     if (snapshot.exists()) {
                         voters = snapshot.val();
 
@@ -1502,6 +1897,9 @@
                                 copyVoterDetails(voterId);
                             });
                         });
+
+                        // Update polling statistics
+                        updatePollingStats();
                     }
                 });
             } catch (error) {
@@ -1510,124 +1908,427 @@
             }
         }
 
-        // Load results
+        // Load results with real-time listener
         async function loadResults() {
             try {
+                // Remove any existing listener
+                if (resultsListener) {
+                    database.ref('TRIBUNE/elections/' + electionId + '/results').off('value', resultsListener);
+                }
+
                 const resultsRef = database.ref('TRIBUNE/elections/' + electionId + '/results');
-                const snapshot = await resultsRef.once('value');
 
-                if (snapshot.exists()) {
-                    results = snapshot.val();
+                // Set up real-time listener for results
+                resultsListener = resultsRef.on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        results = snapshot.val();
 
-                    // Update results tab
-                    document.getElementById('resultsPublished').textContent = electionData.isPublished ? 'Yes' : 'No';
-                    document.getElementById('resultsPublishedAt').textContent = electionData.publishedAt || '-';
+                        // Update results tab
+                        document.getElementById('resultsPublished').textContent = electionData.isPublished ? 'Yes' : 'No';
+                        document.getElementById('resultsPublishedAt').textContent = electionData.publishedAt || '-';
 
-                    // Only show results if published
-                    if (electionData.isPublished) {
-                        const resultsContainer = document.getElementById('resultsContainer');
-                        resultsContainer.innerHTML = '';
+                        // Only show results if published
+                        if (electionData.isPublished) {
+                            const resultsContainer = document.getElementById('resultsContainer');
+                            resultsContainer.innerHTML = '';
 
-                        // Create results table
-                        const resultsTable = document.createElement('table');
-                        resultsTable.className = 'table-container';
+                            // Create results comparison
+                            const resultsComparison = document.createElement('div');
+                            resultsComparison.className = 'results-comparison';
 
-                        const thead = document.createElement('thead');
-                        thead.innerHTML = `
-                            <tr>
-                                <th>Rank</th>
-                                <th>Name</th>
-                                <th>Party</th>
-                                <th>Votes</th>
-                                <th>Percentage</th>
-                            </tr>
-                        `;
-                        resultsTable.appendChild(thead);
-
-                        const tbody = document.createElement('tbody');
-
-                        // Create array of candidates with their votes
-                        const candidatesWithVotes = [];
-                        Object.keys(candidates).forEach(candidateId => {
-                            const candidate = candidates[candidateId];
-                            const votes = results[candidateId] || 0;
-                            candidatesWithVotes.push({
-                                id: candidateId,
-                                name: candidate.name,
-                                party: candidate.party,
-                                votes: votes
-                            });
-                        });
-
-                        // Sort by votes (descending)
-                        candidatesWithVotes.sort((a, b) => b.votes - a.votes);
-
-                        // Calculate total votes
-                        const totalVotes = candidatesWithVotes.reduce((sum, candidate) => sum + candidate.votes, 0);
-
-                        // Add rows to table
-                        candidatesWithVotes.forEach((candidate, index) => {
-                            const percentage = totalVotes > 0 ? Math.round((candidate.votes / totalVotes) * 100) : 0;
-                            const row = document.createElement('tr');
-
-                            row.innerHTML = `
-                                <td>${index + 1}</td>
-                                <td>${candidate.name}</td>
-                                <td>${candidate.party}</td>
-                                <td>${candidate.votes}</td>
-                                <td>${percentage}%</td>
+                            // Firebase results
+                            const firebaseResults = document.createElement('div');
+                            firebaseResults.className = 'results-card';
+                            firebaseResults.innerHTML = `
+                                <div class="results-title">
+                                    <i class="fas fa-database"></i>
+                                    Firebase Results
+                                </div>
+                                <table class="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Name</th>
+                                            <th>Votes</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="firebaseResultsBody">
+                                        <!-- Results will be populated here -->
+                                    </tbody>
+                                </table>
                             `;
 
-                            tbody.appendChild(row);
-                        });
+                            // Blockchain results
+                            const blockchainResults = document.createElement('div');
+                            blockchainResults.className = 'results-card';
+                            blockchainResults.innerHTML = `
+                                <div class="results-title">
+                                    <i class="fas fa-link"></i>
+                                    Blockchain Results
+                                </div>
+                                <table class="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Name</th>
+                                            <th>Votes</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="blockchainResultsBody">
+                                        <!-- Results will be populated here -->
+                                    </tbody>
+                                </table>
+                            `;
 
-                        resultsTable.appendChild(tbody);
-                        resultsContainer.appendChild(resultsTable);
-                    } else {
-                        document.getElementById('resultsContainer').innerHTML = `
-                            <div class="stat-card" style="text-align: center;">
-                                <i class="fas fa-lock" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
-                                <p style="color: var(--text-secondary);">Results have not been published yet. Please check back later.</p>
-                            </div>
-                        `;
+                            resultsComparison.appendChild(firebaseResults);
+                            resultsComparison.appendChild(blockchainResults);
+                            resultsContainer.appendChild(resultsComparison);
+
+                            // Match indicator
+                            const matchIndicator = document.createElement('div');
+                            matchIndicator.className = 'match-indicator';
+                            matchIndicator.id = 'matchIndicator';
+                            matchIndicator.innerHTML = `
+                                <i class="fas fa-check-circle"></i>
+                                <span style="color: #00ff00;">Results match between Firebase and Blockchain</span>
+                            `;
+                            resultsContainer.appendChild(matchIndicator);
+
+                            // Populate results
+                            populateResults();
+                        } else {
+                            document.getElementById('resultsContainer').innerHTML = `
+                                <div class="stat-card" style="text-align: center;">
+                                    <i class="fas fa-lock" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                                    <p style="color: var(--text-secondary);">Results have not been published yet. Please check back later.</p>
+                                </div>
+                            `;
+                        }
+
+                        // Update votes count on dashboard
+                        updateVotesCount();
                     }
-                }
+                });
             } catch (error) {
                 console.error('Error loading results:', error);
                 showToast('Error', 'Failed to load results', 'error');
             }
         }
 
+        // Load booth status from the new pollbooth section with real-time updates
+        async function loadBoothStatus() {
+            try {
+                // Remove any existing listener
+                if (boothStatusListener) {
+                    database.ref('TRIBUNE/elections/' + electionId + '/pollbooth').off('value', boothStatusListener);
+                }
+
+                const pollboothRef = database.ref('TRIBUNE/elections/' + electionId + '/pollbooth');
+
+                // Set up real-time listener for pollbooth status
+                boothStatusListener = pollboothRef.on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        pollbooths = snapshot.val();
+                    } else {
+                        pollbooths = {};
+                    }
+
+                    // Update booth status container
+                    const boothStatusContainer = document.getElementById('boothStatusContainer');
+                    boothStatusContainer.innerHTML = '';
+
+                    // Create booth grid
+                    const boothGrid = document.createElement('div');
+                    boothGrid.className = 'booth-grid';
+
+                    // Add booth cards for each expected booth
+                    const totalBooths = parseInt(electionData.booths) || 1;
+                    let activeBoothsCount = 0;
+
+                    for (let i = 1; i <= totalBooths; i++) {
+                        const boothKey = 'booth_' + i;
+                        const booth = pollbooths[boothKey];
+
+                        const boothCard = document.createElement('div');
+                        boothCard.className = 'booth-card';
+
+                        let statusClass = 'inactive';
+                        let statusText = 'Inactive';
+                        let voteCount = 0;
+                        let lastPing = 'Never';
+                        let isReady = false;
+
+                        if (booth) {
+                            // CHECK 1: Explicit Offline Status from visibilitychange
+                            // If the polling page sent 'offline' explicitly, we respect that immediately.
+                            if (booth.status === 'offline') {
+                                statusClass = 'offline';
+                                statusText = 'Offline';
+                            }
+                            // CHECK 2: Time-based Ping Check (Fallback)
+                            else {
+                                const lastPingTime = booth.lastPing ? new Date(booth.lastPing) : null;
+                                const now = new Date();
+
+                                if (lastPingTime && (now - lastPingTime) < 2 * 60 * 1000) {
+                                    // Booth is online (ping within last 2 minutes)
+                                    if (booth.status === 'active') {
+                                        statusClass = 'active';
+                                        statusText = 'Active';
+                                        isReady = true;
+                                        activeBoothsCount++;
+                                    } else if (booth.status === 'ready') {
+                                        statusClass = 'ready';
+                                        statusText = 'Ready';
+                                        isReady = true;
+                                        activeBoothsCount++;
+                                    } else if (booth.status === 'idle') {
+                                        statusClass = 'idle';
+                                        statusText = 'Idle';
+                                        isReady = true;
+                                        activeBoothsCount++;
+                                    }
+                                } else {
+                                    // Booth is offline based on timeout
+                                    statusClass = 'offline';
+                                    statusText = 'Offline';
+                                }
+                            }
+
+                            voteCount = booth.voteCount || 0;
+
+                            if (booth.lastPing) {
+                                lastPing = new Date(booth.lastPing).toLocaleString();
+                            }
+                        }
+
+                        boothCard.innerHTML = `
+                            <div class="booth-header">
+                                <div class="booth-title">Booth ${i}</div>
+                                <div class="booth-status ${statusClass}">
+                                    <span class="status-dot"></span>
+                                    ${statusText}
+                                </div>
+                            </div>
+                            <div class="booth-details">
+                                <div class="booth-detail">
+                                    <div class="booth-detail-label">Status:</div>
+                                    <div class="booth-detail-value">${statusText}</div>
+                                </div>
+                                <div class="booth-detail">
+                                    <div class="booth-detail-label">Votes:</div>
+                                    <div class="booth-detail-value">${voteCount}</div>
+                                </div>
+                                <div class="booth-detail">
+                                    <div class="booth-detail-label">Last Ping:</div>
+                                    <div class="booth-detail-value">${lastPing}</div>
+                                </div>
+                                <div class="booth-detail">
+                                    <div class="booth-detail-label">Registered:</div>
+                                    <div class="booth-detail-value">${booth ? 'Yes' : 'No'}</div>
+                                </div>
+                                <div class="booth-detail">
+                                    <div class="booth-detail-label">Voter ID Section:</div>
+                                    <div class="booth-detail-value">${isReady ? 'Ready' : 'Not Ready'}</div>
+                                </div>
+                            </div>
+                        `;
+
+                        boothGrid.appendChild(boothCard);
+                    }
+
+                    boothStatusContainer.appendChild(boothGrid);
+
+                    // Update active booths count
+                    document.getElementById('activeBooths').textContent = activeBoothsCount;
+                    document.getElementById('activeBoothsCount').textContent = activeBoothsCount;
+
+                    // Check if all booths are ready
+                    const allBoothsReady = checkAllBoothsReady();
+
+                    // Update activate polling and test buttons
+                    const activatePollingBtn = document.getElementById('activatePollingBtn');
+                    const deactivatePollingBtn = document.getElementById('deactivatePollingBtn');
+                    const testPollingBtn = document.getElementById('testPollingBtn');
+
+                    if (allBoothsReady && !electionData.isActive) {
+                        activatePollingBtn.disabled = false;
+                        testPollingBtn.disabled = false;
+                    } else {
+                        activatePollingBtn.disabled = true;
+                        testPollingBtn.disabled = true;
+                    }
+
+                    if (electionData.isActive) {
+                        activatePollingBtn.style.display = 'none';
+                        deactivatePollingBtn.style.display = 'inline-flex';
+                    } else {
+                        activatePollingBtn.style.display = 'inline-flex';
+                        deactivatePollingBtn.style.display = 'none';
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading booth status:', error);
+                showToast('Error', 'Failed to load booth status', 'error');
+            }
+        }
+
+        // Check if all booths are ready
+        function checkAllBoothsReady() {
+            const totalBooths = parseInt(electionData.booths) || 1;
+
+            for (let i = 1; i <= totalBooths; i++) {
+                const boothKey = 'booth_' + i;
+                const booth = pollbooths[boothKey];
+
+                if (!booth) {
+                    return false;
+                }
+
+                // If explicitly offline, it's not ready
+                if (booth.status === 'offline') {
+                    return false;
+                }
+
+                // Check if booth is online based on last ping
+                const lastPingTime = booth.lastPing ? new Date(booth.lastPing) : null;
+                const now = new Date();
+
+                if (!lastPingTime || (now - lastPingTime) >= 2 * 60 * 1000) {
+                    // Booth is offline
+                    return false;
+                }
+
+                if (booth.status !== 'ready' && booth.status !== 'active' && booth.status !== 'idle') {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Check for scheduled polling start
+        function checkScheduledPolling() {
+            if (electionData.isActive) {
+                return; // Already active
+            }
+
+            const electionDate = electionData.electionDate;
+            const startTime = electionData.startTime;
+
+            if (!electionDate || !startTime) {
+                return; // No scheduled time
+            }
+
+            // Parse date and time
+            const dateTimeString = `${electionDate}T${startTime}`;
+            const scheduledStartTime = new Date(dateTimeString);
+            const now = new Date();
+
+            // If scheduled time is in the future, set up countdown
+            if (scheduledStartTime > now) {
+                const timeUntilStart = scheduledStartTime - now;
+
+                // Show countdown container
+                document.getElementById('countdownContainer').style.display = 'block';
+
+                // Start countdown
+                startCountdown(timeUntilStart, scheduledStartTime);
+            }
+        }
+
+        // Start countdown
+        function startCountdown(timeUntilStart, scheduledStartTime) {
+            // Clear any existing countdown
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            // Update countdown immediately
+            updateCountdown(timeUntilStart);
+
+            // Set up interval to update countdown
+            countdownInterval = setInterval(() => {
+                const now = new Date();
+                const timeUntil = scheduledStartTime - now;
+
+                if (timeUntil <= 0) {
+                    // Time's up, activate polling
+                    clearInterval(countdownInterval);
+                    document.getElementById('countdownContainer').style.display = 'none';
+
+                    // Check if all booths are ready before activating
+                    if (checkAllBoothsReady()) {
+                        activatePolling();
+                    } else {
+                        showToast('Warning', 'Scheduled polling time reached but not all booths are ready', 'warning');
+                    }
+                } else {
+                    updateCountdown(timeUntil);
+                }
+            }, 1000);
+        }
+
+        // Update countdown display
+        function updateCountdown(timeUntil) {
+            const hours = Math.floor(timeUntil / (1000 * 60 * 60));
+            const minutes = Math.floor((timeUntil % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeUntil % (1000 * 60)) / 1000);
+
+            document.getElementById('countdownTime').textContent =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
         // Update polling statistics
         async function updatePollingStats() {
             try {
-                const votersRef = database.ref('TRIBUNE/elections/' + electionId + '/voters');
-                const snapshot = await votersRef.once('value');
-
-                if (snapshot.exists()) {
-                    const voters = snapshot.val();
-
-                    // Calculate statistics
-                    const totalVoters = Object.keys(voters).length;
-                    let votesCast = 0;
-
-                    Object.keys(voters).forEach(voterId => {
-                        if (voters[voterId].hasVoted) {
-                            votesCast++;
-                        }
-                    });
-
-                    const votingPercentage = totalVoters > 0 ? Math.round((votesCast / totalVoters) * 100) : 0;
-                    const remainingVoters = totalVoters - votesCast;
-
-                    // Update polling tab
-                    document.getElementById('totalVotersPolling').textContent = totalVoters;
-                    document.getElementById('votesCastPolling').textContent = votesCast;
-                    document.getElementById('votingPercentage').textContent = votingPercentage + '%';
-                    document.getElementById('remainingVoters').textContent = remainingVoters;
+                if (!voters || Object.keys(voters).length === 0) {
+                    return;
                 }
+
+                // Calculate statistics
+                const totalVoters = Object.keys(voters).length;
+                let votesCast = 0;
+
+                Object.keys(voters).forEach(voterId => {
+                    if (voters[voterId].hasVoted) {
+                        votesCast++;
+                    }
+                });
+
+                const votingPercentage = totalVoters > 0 ? Math.round((votesCast / totalVoters) * 100) : 0;
+                const remainingVoters = totalVoters - votesCast;
+
+                // Update polling tab
+                document.getElementById('totalVotersPolling').textContent = totalVoters;
+                document.getElementById('votesCastPolling').textContent = votesCast;
+                document.getElementById('votingPercentage').textContent = votingPercentage + '%';
+                document.getElementById('remainingVoters').textContent = remainingVoters;
+
+                // Update dashboard
+                document.getElementById('votesCast').textContent = votesCast;
             } catch (error) {
                 console.error('Error updating polling stats:', error);
+            }
+        }
+
+        // Update votes count on dashboard
+        function updateVotesCount() {
+            try {
+                if (!results || Object.keys(results).length === 0) {
+                    return;
+                }
+
+                let totalVotes = 0;
+                Object.keys(results).forEach(candidateId => {
+                    totalVotes += results[candidateId] || 0;
+                });
+
+                document.getElementById('votesCast').textContent = totalVotes;
+            } catch (error) {
+                console.error('Error updating votes count:', error);
             }
         }
 
@@ -1713,8 +2414,8 @@
         }
 
         // Delete candidate
-        async function deleteCandidate(candidateId) {
-            if (confirm('Are you sure you want to delete this candidate?')) {
+        function deleteCandidate(candidateId) {
+            showConfirmDialog('Delete Candidate', 'Are you sure you want to delete this candidate?', async () => {
                 try {
                     await database.ref('TRIBUNE/elections/' + electionId + '/candidates/' + candidateId).remove();
                     await database.ref('TRIBUNE/elections/' + electionId + '/results/' + candidateId).remove();
@@ -1726,7 +2427,7 @@
                     console.error('Error deleting candidate:', error);
                     showToast('Error', 'Failed to delete candidate', 'error');
                 }
-            }
+            });
         }
 
         // Voter Modal
@@ -1822,8 +2523,8 @@
         }
 
         // Delete voter
-        async function deleteVoter(voterId) {
-            if (confirm('Are you sure you want to delete this voter?')) {
+        function deleteVoter(voterId) {
+            showConfirmDialog('Delete Voter', 'Are you sure you want to delete this voter?', async () => {
                 try {
                     await database.ref('TRIBUNE/elections/' + electionId + '/voters/' + voterId).remove();
 
@@ -1832,7 +2533,7 @@
                     console.error('Error deleting voter:', error);
                     showToast('Error', 'Failed to delete voter', 'error');
                 }
-            }
+            });
         }
 
         // Copy voter details
@@ -1905,12 +2606,95 @@
             }
         });
 
+        // Add Booth Modal
+        const addBoothModal = document.getElementById('addBoothModal');
+        const addBoothBtn = document.getElementById('addBoothBtn');
+        const closeAddBoothModal = document.getElementById('closeAddBoothModal');
+        const addBoothForm = document.getElementById('addBoothForm');
+
+        addBoothBtn.addEventListener('click', () => {
+            addBoothForm.reset();
+
+            // Find the next available booth number
+            const totalBooths = parseInt(electionData.booths) || 1;
+            let nextBoothNumber = 1;
+
+            // Check existing booths to find the next available number
+            if (pollbooths) {
+                for (let i = 1; i <= totalBooths; i++) {
+                    const boothKey = 'booth_' + i;
+                    if (!pollbooths[boothKey]) {
+                        nextBoothNumber = i;
+                        break;
+                    }
+                    nextBoothNumber = i + 1;
+                }
+            }
+
+            document.getElementById('newBoothNumber').value = nextBoothNumber;
+            addBoothModal.style.display = 'flex';
+        });
+
+        closeAddBoothModal.addEventListener('click', () => {
+            addBoothModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === addBoothModal) {
+                addBoothModal.style.display = 'none';
+            }
+        });
+
+        addBoothForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const boothNumber = parseInt(document.getElementById('newBoothNumber').value);
+
+            try {
+                // Check if booth number is valid
+                if (isNaN(boothNumber) || boothNumber < 1) {
+                    showToast('Error', 'Please enter a valid booth number', 'error');
+                    return;
+                }
+
+                // Check if booth number already exists in the new pollbooth section
+                const boothKey = 'booth_' + boothNumber;
+                const boothRef = database.ref('TRIBUNE/elections/' + electionId + '/pollbooth/' + boothKey);
+                const snapshot = await boothRef.once('value');
+
+                if (snapshot.exists()) {
+                    showToast('Error', 'Booth with this number already exists', 'error');
+                    return;
+                }
+
+                // Add new booth to the pollbooth section
+                await boothRef.set({
+                    status: 'inactive',
+                    registeredAt: new Date().toISOString()
+                });
+
+                showToast('Success', 'New booth added successfully', 'success');
+                addBoothModal.style.display = 'none';
+                await loadBoothStatus();
+            } catch (error) {
+                console.error('Error adding booth:', error);
+                showToast('Error', 'Failed to add booth', 'error');
+            }
+        });
+
         // Polling Management
         const activatePollingBtn = document.getElementById('activatePollingBtn');
         const deactivatePollingBtn = document.getElementById('deactivatePollingBtn');
         const testPollingBtn = document.getElementById('testPollingBtn');
+        const openPollingPageBtn = document.getElementById('openPollingPageBtn');
 
-        activatePollingBtn.addEventListener('click', async () => {
+        // Open polling page button
+        openPollingPageBtn.addEventListener('click', () => {
+            window.open('polling.html', '_blank');
+        });
+
+        // Activate polling function
+        async function activatePolling() {
             try {
                 await database.ref('TRIBUNE/elections/' + electionId).update({
                     isActive: true,
@@ -1923,58 +2707,216 @@
                 console.error('Error activating polling:', error);
                 showToast('Error', 'Failed to activate polling', 'error');
             }
+        }
+
+        activatePollingBtn.addEventListener('click', () => {
+            // Check if all booths are ready
+            if (!checkAllBoothsReady()) {
+                showToast('Warning', 'Not all booths are ready. Please wait for all booths to be ready before activating polling.', 'warning');
+                return;
+            }
+
+            showConfirmDialog('Activate Polling', 'Are you sure you want to activate polling? This will allow voters to cast their votes.', async () => {
+                await activatePolling();
+            });
         });
 
-        deactivatePollingBtn.addEventListener('click', async () => {
+        deactivatePollingBtn.addEventListener('click', () => {
+            showConfirmDialog('Deactivate Polling', 'Are you sure you want to deactivate polling? This will prevent voters from casting their votes.', async () => {
+                try {
+                    await database.ref('TRIBUNE/elections/' + electionId).update({
+                        isActive: false
+                    });
+
+                    showToast('Success', 'Polling deactivated successfully', 'success');
+                    await loadElectionData();
+                } catch (error) {
+                    console.error('Error deactivating polling:', error);
+                    showToast('Error', 'Failed to deactivate polling', 'error');
+                }
+            });
+        });
+
+        testPollingBtn.addEventListener('click', () => {
+            showConfirmDialog('Test Mode', 'Are you sure you want to enable test mode? This will activate polling for testing purposes.', async () => {
+                try {
+                    // Toggle test mode
+                    const isTestMode = electionData.isTestMode || false;
+
+                    await database.ref('TRIBUNE/elections/' + electionId).update({
+                        isTestMode: !isTestMode,
+                        isActive: !isTestMode,
+                        activeSince: !isTestMode ? new Date().toISOString() : null
+                    });
+
+                    showToast('Success', !isTestMode ? 'Test mode activated' : 'Test mode deactivated', 'success');
+                    await loadElectionData();
+                } catch (error) {
+                    console.error('Error toggling test mode:', error);
+                    showToast('Error', 'Failed to toggle test mode', 'error');
+                }
+            });
+        });
+
+        // Populate results
+        async function populateResults() {
             try {
-                await database.ref('TRIBUNE/elections/' + electionId).update({
-                    isActive: false
+                // Get Firebase results
+                const firebaseResultsBody = document.getElementById('firebaseResultsBody');
+                firebaseResultsBody.innerHTML = '';
+
+                // Get blockchain results
+                const blockchainResultsBody = document.getElementById('blockchainResultsBody');
+                blockchainResultsBody.innerHTML = '';
+
+                // Count votes from blockchain
+                const blockchainVotes = {};
+                const blockchainRef = database.ref('TRIBUNE/elections/' + electionId + '/blockchain');
+                const blockchainSnapshot = await blockchainRef.once('value');
+
+                if (blockchainSnapshot.exists()) {
+                    const blockchainData = blockchainSnapshot.val();
+                    Object.keys(blockchainData).forEach(key => {
+                        const vote = blockchainData[key];
+                        const candidateName = vote.candidateName;
+                        blockchainVotes[candidateName] = (blockchainVotes[candidateName] || 0) + 1;
+                    });
+                }
+
+                // Create array of candidates with their votes
+                const candidatesWithFirebaseVotes = [];
+                const candidatesWithBlockchainVotes = [];
+
+                Object.keys(candidates).forEach(candidateId => {
+                    const candidate = candidates[candidateId];
+                    const firebaseVoteCount = results[candidateId] || 0;
+                    const blockchainVoteCount = blockchainVotes[candidate.name] || 0;
+
+                    candidatesWithFirebaseVotes.push({
+                        id: candidateId,
+                        name: candidate.name,
+                        party: candidate.party,
+                        votes: firebaseVoteCount
+                    });
+
+                    candidatesWithBlockchainVotes.push({
+                        id: candidateId,
+                        name: candidate.name,
+                        party: candidate.party,
+                        votes: blockchainVoteCount
+                    });
                 });
 
-                showToast('Success', 'Polling deactivated successfully', 'success');
-                await loadElectionData();
-            } catch (error) {
-                console.error('Error deactivating polling:', error);
-                showToast('Error', 'Failed to deactivate polling', 'error');
-            }
-        });
+                // Sort by votes (descending)
+                candidatesWithFirebaseVotes.sort((a, b) => b.votes - a.votes);
+                candidatesWithBlockchainVotes.sort((a, b) => b.votes - a.votes);
 
-        testPollingBtn.addEventListener('click', async () => {
-            try {
-                // Toggle test mode
-                const isTestMode = electionData.isTestMode || false;
+                // Calculate total votes
+                const totalFirebaseVotes = candidatesWithFirebaseVotes.reduce((sum, candidate) => sum + candidate.votes, 0);
+                const totalBlockchainVotes = candidatesWithBlockchainVotes.reduce((sum, candidate) => sum + candidate.votes, 0);
 
-                await database.ref('TRIBUNE/elections/' + electionId).update({
-                    isTestMode: !isTestMode,
-                    isActive: !isTestMode,
-                    activeSince: !isTestMode ? new Date().toISOString() : null
+                // Add rows to Firebase table
+                candidatesWithFirebaseVotes.forEach((candidate, index) => {
+                    const percentage = totalFirebaseVotes > 0 ? Math.round((candidate.votes / totalFirebaseVotes) * 100) : 0;
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${candidate.name}</td>
+                        <td>${candidate.votes}</td>
+                        <td>${percentage}%</td>
+                    `;
+
+                    firebaseResultsBody.appendChild(row);
                 });
 
-                showToast('Success', !isTestMode ? 'Test mode activated' : 'Test mode deactivated', 'success');
-                await loadElectionData();
-            } catch (error) {
-                console.error('Error toggling test mode:', error);
-                showToast('Error', 'Failed to toggle test mode', 'error');
-            }
-        });
+                // Add rows to Blockchain table
+                candidatesWithBlockchainVotes.forEach((candidate, index) => {
+                    const percentage = totalBlockchainVotes > 0 ? Math.round((candidate.votes / totalBlockchainVotes) * 100) : 0;
+                    const row = document.createElement('tr');
 
-        // Update polling buttons based on status
-        function updatePollingButtons() {
-            if (electionData.isActive) {
-                activatePollingBtn.style.display = 'none';
-                deactivatePollingBtn.style.display = 'inline-flex';
-            } else {
-                activatePollingBtn.style.display = 'inline-flex';
-                deactivatePollingBtn.style.display = 'none';
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${candidate.name}</td>
+                        <td>${candidate.votes}</td>
+                        <td>${percentage}%</td>
+                    `;
+
+                    blockchainResultsBody.appendChild(row);
+                });
+
+                // Check if results match
+                const matchIndicator = document.getElementById('matchIndicator');
+                let resultsMatch = true;
+
+                // Compare counts for each candidate
+                Object.keys(candidates).forEach(candidateId => {
+                    const candidateName = candidates[candidateId].name;
+                    const firebaseCount = results[candidateId] || 0;
+                    const blockchainCount = blockchainVotes[candidateName] || 0;
+
+                    if (firebaseCount !== blockchainCount) {
+                        resultsMatch = false;
+                    }
+                });
+
+                if (resultsMatch) {
+                    matchIndicator.className = 'match-indicator match';
+                    matchIndicator.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <span>Results match between Firebase and Blockchain</span>
+                    `;
+                } else {
+                    matchIndicator.className = 'match-indicator mismatch';
+                    matchIndicator.innerHTML = `
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Results mismatch between Firebase and Blockchain</span>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error populating results:', error);
+                showToast('Error', 'Failed to populate results', 'error');
             }
         }
 
         // Publish Results
         const publishResultsBtn = document.getElementById('publishResultsBtn');
 
-        publishResultsBtn.addEventListener('click', async () => {
-            if (confirm('Are you sure you want to publish the results? This action cannot be undone.')) {
+        publishResultsBtn.addEventListener('click', () => {
+            showConfirmDialog('Publish Results', 'Are you sure you want to publish the results? This action cannot be undone.', async () => {
                 try {
+                    // Count votes from blockchain and update results
+                    const blockchainRef = database.ref('TRIBUNE/elections/' + electionId + '/blockchain');
+                    const blockchainSnapshot = await blockchainRef.once('value');
+
+                    if (blockchainSnapshot.exists()) {
+                        const blockchainData = blockchainSnapshot.val();
+                        const voteCounts = {};
+
+                        // Count votes for each candidate
+                        Object.keys(blockchainData).forEach(key => {
+                            const vote = blockchainData[key];
+                            const candidateName = vote.candidateName;
+                            voteCounts[candidateName] = (voteCounts[candidateName] || 0) + 1;
+                        });
+
+                        // Update results in Firebase
+                        Object.keys(voteCounts).forEach(candidateName => {
+                            // Find candidate ID from name
+                            let candidateId = null;
+                            Object.keys(candidates).forEach(id => {
+                                if (candidates[id].name === candidateName) {
+                                    candidateId = id;
+                                    return;
+                                }
+                            });
+
+                            if (candidateId) {
+                                database.ref('TRIBUNE/elections/' + electionId + '/results/' + candidateId).set(voteCounts[candidateName]);
+                            }
+                        });
+                    }
+
                     await database.ref('TRIBUNE/elections/' + electionId).update({
                         isPublished: true,
                         publishedAt: new Date().toISOString()
@@ -1982,12 +2924,27 @@
 
                     showToast('Success', 'Results published successfully', 'success');
                     await loadElectionData();
+                    await loadResults();
                 } catch (error) {
                     console.error('Error publishing results:', error);
                     showToast('Error', 'Failed to publish results', 'error');
                 }
-            }
+            });
         });
+
+        // Show confirmation dialog
+        function showConfirmDialog(title, message, callback) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = callback;
+            confirmModal.style.display = 'flex';
+        }
+
+        // Hide confirmation dialog
+        function hideConfirmDialog() {
+            confirmModal.style.display = 'none';
+            confirmCallback = null;
+        }
 
         // Toast notification function with improved hiding mechanism
         function showToast(title, message, type = 'success', details = '') {
@@ -2012,6 +2969,10 @@
                 toast.style.borderLeftColor = 'var(--danger)';
                 document.querySelector('.toast-icon').className = 'fas fa-exclamation-circle toast-icon';
                 document.querySelector('.toast-icon').style.color = 'var(--danger)';
+            } else if (type === 'warning') {
+                toast.style.borderLeftColor = 'var(--warning)';
+                document.querySelector('.toast-icon').className = 'fas fa-exclamation-triangle toast-icon';
+                document.querySelector('.toast-icon').style.color = 'var(--warning)';
             } else {
                 toast.style.borderLeftColor = 'var(--success)';
                 document.querySelector('.toast-icon').className = 'fas fa-check-circle toast-icon';
@@ -2037,27 +2998,49 @@
             }
         }
 
+        // Set up real-time listeners
+        function setupRealtimeListeners() {
+            // Listen for election data changes
+            if (electionDataListener) {
+                database.ref('TRIBUNE/elections/' + electionId).off('value', electionDataListener);
+            }
+
+            electionDataListener = database.ref('TRIBUNE/elections/' + electionId).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    electionData = snapshot.val();
+
+                    // Update polling status in header
+                    if (electionData.isActive) {
+                        pollingStatus.classList.remove('inactive');
+                        pollingStatus.classList.add('active');
+                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Active';
+                    } else {
+                        pollingStatus.classList.remove('active');
+                        pollingStatus.classList.add('inactive');
+                        pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Inactive';
+                    }
+
+                    // Update polling tab
+                    document.getElementById('pollingCurrentStatus').textContent = electionData.isActive ? 'Active' : 'Inactive';
+                    document.getElementById('pollingStartTime').textContent = electionData.startTime;
+                    document.getElementById('pollingEndTime').textContent = electionData.endTime;
+                    document.getElementById('pollingActiveSince').textContent = electionData.activeSince || '-';
+
+                    // Update results tab
+                    document.getElementById('resultsPublished').textContent = electionData.isPublished ? 'Yes' : 'No';
+                    document.getElementById('resultsPublishedAt').textContent = electionData.publishedAt || '-';
+
+                    // Check for scheduled polling start
+                    checkScheduledPolling();
+                }
+            });
+        }
+
         // Initial data load
         loadElectionData();
 
-        // Listen for real-time updates
-        database.ref('TRIBUNE/elections/' + electionId).on('value', (snapshot) => {
-            if (snapshot.exists()) {
-                electionData = snapshot.val();
-                updatePollingButtons();
-
-                // Update polling status in header
-                if (electionData.isActive) {
-                    pollingStatus.classList.remove('inactive');
-                    pollingStatus.classList.add('active');
-                    pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Active';
-                } else {
-                    pollingStatus.classList.remove('active');
-                    pollingStatus.classList.add('inactive');
-                    pollingStatus.innerHTML = '<span class="status-dot"></span> Polling Inactive';
-                }
-            }
-        });
+        // Set up real-time listeners
+        setupRealtimeListeners();
     </script>
 </body>
 
