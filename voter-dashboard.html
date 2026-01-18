@@ -160,6 +160,20 @@
             transition: all 0.3s ease;
         }
 
+        .menu-link i {
+            font-size: 1.2rem;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .menu-link span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+            /* Reduced font size for better visibility */
+        }
+
         .menu-link:hover,
         .menu-link.active {
             background: rgba(99, 102, 241, 0.2);
@@ -296,6 +310,7 @@
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            word-break: break-all;
         }
 
         .stat-change {
@@ -733,9 +748,145 @@
             font-family: monospace;
         }
 
+        /* OTP Section Styles */
+        .otp-section {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .otp-section.active {
+            display: block;
+        }
+
+        .otp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .otp-title {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .otp-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .otp-expiry {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Vote Confirmation Section */
+        .vote-confirmation {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .vote-confirmation.active {
+            display: block;
+        }
+
+        .vote-confirmation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .vote-confirmation-title {
+            font-weight: 600;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vote-confirmation-message {
+            margin: 0.5rem 0;
+            color: var(--text);
+        }
+
+        .vote-confirmation-candidate {
+            font-weight: 600;
+            color: var(--primary);
+            display: none;
+        }
+
+        .vote-confirmation-candidate.visible {
+            display: inline;
+        }
+
+        .password-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .password-input input {
+            flex: 1;
+        }
+
+        .password-input button {
+            white-space: nowrap;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* Mobile Responsive Styles */
         @media (max-width: 1024px) {
             main {
                 flex-direction: column;
+                padding: 1rem;
             }
 
             .sidebar {
@@ -756,8 +907,18 @@
                 margin-bottom: 0;
             }
 
+            .menu-link span {
+                display: none;
+                /* Hide text in mobile view */
+            }
+
+            .menu-link {
+                padding: 0.75rem;
+                /* Adjust padding for icon-only view */
+            }
+
             .dashboard-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
 
             .content-header {
@@ -776,7 +937,7 @@
             }
 
             .polling-stats {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .toast {
@@ -809,6 +970,83 @@
                 left: 1rem;
                 max-width: none;
             }
+
+            .header-container {
+                padding: 0 0.5rem;
+            }
+
+            .user-details {
+                display: none;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+
+            .voter-id {
+                max-width: 150px;
+            }
+
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0;
+            }
+
+            .content-title {
+                font-size: 1.2rem;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+
+            .polling-stat-value {
+                font-size: 1.2rem;
+            }
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .qr-code {
+                width: 120px;
+                height: 120px;
+            }
+
+            .voter-id {
+                max-width: 120px;
+                font-size: 0.7rem;
+            }
+
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -839,37 +1077,37 @@
                 <li class="menu-item">
                     <a href="#" class="menu-link active" data-tab="dashboard">
                         <i class="fas fa-tachometer-alt"></i>
-                        Dashboard
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link" data-tab="candidates">
                         <i class="fas fa-users"></i>
-                        Candidates
+                        <span>Candidates</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link" data-tab="news">
                         <i class="fas fa-newspaper"></i>
-                        Election News
+                        <span>Election News</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link" data-tab="polling">
                         <i class="fas fa-poll"></i>
-                        Live Poll Count
+                        <span>Live Poll Count</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link" data-tab="voter-id">
                         <i class="fas fa-id-card"></i>
-                        Voter ID
+                        <span>Voter ID</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link" data-tab="results">
                         <i class="fas fa-chart-bar"></i>
-                        Results
+                        <span>Results</span>
                     </a>
                 </li>
             </ul>
@@ -883,6 +1121,43 @@
                     <div class="vote-status not-voted" id="voteStatus">
                         <span class="status-dot"></span>
                         Not Voted
+                    </div>
+                </div>
+
+                <!-- OTP Section -->
+                <div class="otp-section" id="otpSection">
+                    <div class="otp-header">
+                        <div class="otp-title">
+                            <i class="fas fa-key"></i>
+                            One-Time Password
+                        </div>
+                        <button class="btn btn-secondary" id="closeOtpBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="otp-value" id="otpValue">------</div>
+                    <div class="otp-expiry" id="otpExpiry">Expires in: 2:00</div>
+                </div>
+
+                <!-- Vote Confirmation Section -->
+                <div class="vote-confirmation" id="voteConfirmation">
+                    <div class="vote-confirmation-header">
+                        <div class="vote-confirmation-title">
+                            <i class="fas fa-check-circle"></i>
+                            Vote Confirmation
+                        </div>
+                        <button class="btn btn-secondary" id="closeVoteConfirmationBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="vote-confirmation-message">
+                        Your vote has been successfully cast for:
+                        <span class="vote-confirmation-candidate" id="voteConfirmationCandidate">[Hidden]</span>
+                    </div>
+                    <div class="password-input">
+                        <input type="password" class="form-input" id="passwordInput"
+                            placeholder="Enter your password to reveal candidate name">
+                        <button class="btn btn-primary" id="revealCandidateBtn">Reveal</button>
                     </div>
                 </div>
 
@@ -1077,6 +1352,11 @@
         </div>
     </main>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Edit Profile Modal -->
     <div class="modal" id="editProfileModal">
         <div class="modal-content">
@@ -1162,9 +1442,24 @@
         const toastMessage = document.getElementById('toastMessage');
         const errorDetails = document.getElementById('errorDetails');
         const toastClose = document.getElementById('toastClose');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // OTP Section Elements
+        const otpSection = document.getElementById('otpSection');
+        const otpValue = document.getElementById('otpValue');
+        const otpExpiry = document.getElementById('otpExpiry');
+        const closeOtpBtn = document.getElementById('closeOtpBtn');
+
+        // Vote Confirmation Section Elements
+        const voteConfirmation = document.getElementById('voteConfirmation');
+        const voteConfirmationCandidate = document.getElementById('voteConfirmationCandidate');
+        const passwordInput = document.getElementById('passwordInput');
+        const revealCandidateBtn = document.getElementById('revealCandidateBtn');
+        const closeVoteConfirmationBtn = document.getElementById('closeVoteConfirmationBtn');
 
         // Toast timeout variable
         let toastTimeout;
+        let otpTimeout;
 
         // Tab switching
         menuLinks.forEach(link => {
@@ -1192,6 +1487,49 @@
         // Toast close button
         toastClose.addEventListener('click', () => {
             hideToast();
+        });
+
+        // OTP Section close button
+        closeOtpBtn.addEventListener('click', () => {
+            otpSection.classList.remove('active');
+            if (otpTimeout) {
+                clearTimeout(otpTimeout);
+            }
+        });
+
+        // Vote Confirmation Section close button
+        closeVoteConfirmationBtn.addEventListener('click', () => {
+            voteConfirmation.classList.remove('active');
+            passwordInput.value = '';
+            voteConfirmationCandidate.classList.remove('visible');
+            voteConfirmationCandidate.textContent = '[Hidden]';
+        });
+
+        // Reveal candidate button
+        revealCandidateBtn.addEventListener('click', () => {
+            const password = passwordInput.value;
+            if (password === voterData.password) {
+                voteConfirmationCandidate.classList.add('visible');
+                showToast('Success', 'Candidate name revealed', 'success');
+            } else {
+                showToast('Error', 'Incorrect password', 'error');
+            }
+        });
+
+        // Back to top button functionality
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
         // Check if user is logged in
@@ -1288,6 +1626,11 @@
                         voteStatus.classList.remove('not-voted');
                         voteStatus.classList.add('voted');
                         voteStatus.innerHTML = '<span class="status-dot"></span> Voted';
+
+                        // Check for vote confirmation data
+                        if (voterData.voteConfirmation) {
+                            showVoteConfirmation(voterData.voteConfirmation.candidateName);
+                        }
                     } else {
                         voteStatus.classList.remove('voted');
                         voteStatus.classList.add('not-voted');
@@ -1299,6 +1642,15 @@
                     document.getElementById('editVoterEmail').value = voterData.email;
                     document.getElementById('editVoterPhone').value = voterData.phone;
                     document.getElementById('editVoterPassword').value = voterData.password;
+
+                    // Check for OTP
+                    if (voterData.otp && voterData.otpExpiry) {
+                        const expiryTime = new Date(voterData.otpExpiry);
+                        const currentTime = new Date();
+                        if (expiryTime > currentTime) {
+                            showOTP(voterData.otp, expiryTime - currentTime);
+                        }
+                    }
                 } else {
                     showToast('Error', 'Voter not found', 'error');
                     window.location.href = 'login.html';
@@ -1307,6 +1659,40 @@
                 console.error('Error loading voter data:', error);
                 showToast('Error', 'Failed to load voter data', 'error');
             }
+        }
+
+        // Show OTP
+        function showOTP(otp, timeRemaining) {
+            otpSection.classList.add('active');
+            otpValue.textContent = otp;
+
+            // Start countdown
+            let timeLeft = Math.floor(timeRemaining / 1000);
+            updateOTPCountdown(timeLeft);
+
+            otpTimeout = setInterval(() => {
+                timeLeft--;
+                updateOTPCountdown(timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimeout);
+                    otpSection.classList.remove('active');
+                }
+            }, 1000);
+        }
+
+        // Update OTP countdown
+        function updateOTPCountdown(timeLeft) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            otpExpiry.textContent = `Expires in: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Show vote confirmation
+        function showVoteConfirmation(candidateName) {
+            voteConfirmation.classList.add('active');
+            voteConfirmationCandidate.textContent = candidateName;
+            voteConfirmationCandidate.classList.remove('visible');
         }
 
         // Load candidates
@@ -1458,7 +1844,7 @@
                     const defaultNews = [
                         {
                             title: "Election Day Approaching",
-                            content: "The election is scheduled for " + electionData.electionDate + ". Make sure to cast your vote during the polling hours.",
+                            content: "The election is scheduled for " + electionData.electionDate + ". Make sure to cast your vote during polling hours.",
                             date: new Date().toISOString()
                         },
                         {
@@ -1658,10 +2044,24 @@
                     voteStatus.classList.remove('not-voted');
                     voteStatus.classList.add('voted');
                     voteStatus.innerHTML = '<span class="status-dot"></span> Voted';
+
+                    // Check for vote confirmation data
+                    if (voterData.voteConfirmation) {
+                        showVoteConfirmation(voterData.voteConfirmation.candidateName);
+                    }
                 } else {
                     voteStatus.classList.remove('voted');
                     voteStatus.classList.add('not-voted');
                     voteStatus.innerHTML = '<span class="status-dot"></span> Not Voted';
+                }
+
+                // Check for OTP
+                if (voterData.otp && voterData.otpExpiry) {
+                    const expiryTime = new Date(voterData.otpExpiry);
+                    const currentTime = new Date();
+                    if (expiryTime > currentTime) {
+                        showOTP(voterData.otp, expiryTime - currentTime);
+                    }
                 }
             }
         });
